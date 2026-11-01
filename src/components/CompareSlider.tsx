@@ -9,10 +9,18 @@ interface Props {
   after: { src: string; label: string; alt: string };
   width: number;
   height: number;
+  /** Called when an image fails to load (the pair is missing). */
+  onMissing?: () => void;
 }
 
 /** Before / after slider: drag anywhere, or use the arrow keys on the handle. */
-export function CompareSlider({ before, after, width, height }: Props) {
+export function CompareSlider({
+  before,
+  after,
+  width,
+  height,
+  onMissing,
+}: Props) {
   const [position, setPosition] = useState(50);
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
@@ -96,7 +104,7 @@ export function CompareSlider({ before, after, width, height }: Props) {
         width={width}
         height={height}
         draggable={false}
-        loading="lazy"
+        onError={onMissing}
       />
       <div className="compare__before" aria-hidden="false">
         <img
@@ -106,7 +114,7 @@ export function CompareSlider({ before, after, width, height }: Props) {
           width={width}
           height={height}
           draggable={false}
-          loading="lazy"
+          onError={onMissing}
         />
       </div>
 

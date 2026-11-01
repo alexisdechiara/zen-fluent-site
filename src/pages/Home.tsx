@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AccessibilityCheckmark24Regular,
@@ -64,6 +65,7 @@ const reasons = [
 export function Home() {
   const { theme } = useTheme();
   const pair = compare[theme] ?? compare.light;
+  const [compareMissing, setCompareMissing] = useState(false);
 
   return (
     <>
@@ -112,43 +114,46 @@ export function Home() {
         </div>
       </section>
 
-      <section
-        className="section section--compare"
-        aria-labelledby="compare-title">
-        <div className="container">
-          <SectionHead
-            eyebrow="Before / after"
-            title="Same Zen, drawn by Windows"
-            id="compare-title"
-            align="center">
-            Drag the handle to compare Zen's default look with Zen Fluent: same
-            window, same tabs, same page.
-          </SectionHead>
-          <Reveal className="compare-wrap">
-            <CompareSlider
-              key={theme}
-              width={pair.width}
-              height={pair.height}
-              before={{
-                src: pair.before,
-                label: "Zen",
-                alt: "Zen Browser with its default look",
-              }}
-              after={{
-                src: pair.after,
-                label: "Zen + Zen Fluent",
-                alt: "The same window with Zen Fluent",
-              }}
-            />
-            <ul className="compare-notes">
-              <li>WinUI corners, strokes and fills</li>
-              <li>Accent pill on the selected tab</li>
-              <li>Fluent icons</li>
-              <li>A framed page</li>
-            </ul>
-          </Reveal>
-        </div>
-      </section>
+      {!compareMissing && (
+        <section
+          className="section section--compare"
+          aria-labelledby="compare-title">
+          <div className="container">
+            <SectionHead
+              eyebrow="Before / after"
+              title="Same Zen, drawn by Windows"
+              id="compare-title"
+              align="center">
+              Drag the handle to compare Zen's default look with Zen Fluent:
+              same window, same tabs, same page.
+            </SectionHead>
+            <Reveal className="compare-wrap">
+              <CompareSlider
+                key={theme}
+                width={pair.width}
+                height={pair.height}
+                before={{
+                  src: pair.before,
+                  label: "Zen",
+                  alt: "Zen Browser with its default look",
+                }}
+                after={{
+                  src: pair.after,
+                  label: "Zen + Zen Fluent",
+                  alt: "The same window with Zen Fluent",
+                }}
+                onMissing={() => setCompareMissing(true)}
+              />
+              <ul className="compare-notes">
+                <li>WinUI text box URL bar</li>
+                <li>Accent pill on the selected tab</li>
+                <li>Fluent icons</li>
+                <li>WinUI cards for Essentials</li>
+              </ul>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <section className="section" aria-labelledby="why-title">
         <div className="container">
