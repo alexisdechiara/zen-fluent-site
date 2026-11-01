@@ -54,10 +54,7 @@ export function Changelog() {
     <>
       <section className="page-hero">
         <div className="container">
-          <p className="eyebrow rise">Changelog</p>
-          <h1 className="rise" style={{ animationDelay: "60ms" }}>
-            What's new
-          </h1>
+          <h1 className="rise">What's new</h1>
           <p
             className="page-hero__lead rise"
             style={{ animationDelay: "120ms" }}>

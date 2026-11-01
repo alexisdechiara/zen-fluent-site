@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import {
   ArchiveArrowBack24Regular,
   Apps24Regular,
@@ -21,6 +19,13 @@ import { DOCS_URL, ENHANCED_URL } from "../data/site";
 import { CopyField } from "../components/CopyField";
 
 const showcase = [
+  {
+    title: "Or the Microsoft Edge look",
+    text: "A second complete style, from Edge and Fluent 2: a pill address bar, light cards for Essentials and the selected tab, and the page in its frame. Enhanced's Quick Settings switch between Windows 11 and Edge in one click.",
+    image: "edge",
+    alt: "Zen Browser in Zen Fluent's Microsoft Edge style",
+    doc: "settings/appearance.md",
+  },
   {
     title: "A URL bar that feels like Windows",
     text: "A WinUI text box with its accent line, or Edge's pill. Floating, it can be white or black, the window's material, your space's color or see-through glass, and the page behind it dims.",
@@ -102,24 +107,11 @@ const enhanced = [
 ];
 
 export function Mods() {
-  const { hash } = useLocation();
-  useEffect(() => {
-    if (!hash) return;
-    const el = document.getElementById(hash.slice(1));
-    if (el)
-      requestAnimationFrame(() =>
-        el.scrollIntoView({ behavior: "smooth", block: "start" }),
-      );
-  }, [hash]);
-
   return (
     <>
       <section className="page-hero">
         <div className="container">
-          <p className="eyebrow rise">Features</p>
-          <h1 className="rise" style={{ animationDelay: "60ms" }}>
-            Every part of Zen, <span className="gradient-text">redrawn</span>
-          </h1>
+          <h1 className="rise">Every part of Zen, redrawn</h1>
           <p
             className="page-hero__lead rise"
             style={{ animationDelay: "120ms" }}>
@@ -147,9 +139,6 @@ export function Mods() {
               key={item.title}
               className={`showcase__row${i % 2 ? " is-flipped" : ""}`}>
               <div className="showcase__text">
-                <span className="showcase__num">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
                 <h2>{item.title}</h2>
                 <p>{item.text}</p>
                 <a
@@ -179,12 +168,9 @@ export function Mods() {
         id="enhanced"
         aria-labelledby="enhanced-title">
         <div className="container">
-          <SectionHead
-            eyebrow="Zen Fluent Enhanced"
-            title="Optional features, one switch each"
-            id="enhanced-title">
-            A JavaScript layer on top of the look. Each feature has its own
-            switch and leaves nothing behind when turned off.
+          <SectionHead title="Zen Fluent Enhanced" id="enhanced-title">
+            Optional features on top of the look, in JavaScript. Each one has
+            its own switch and leaves nothing behind when turned off.
           </SectionHead>
           <div className="enhanced-grid">
             {enhanced.map(({ icon: Icon, title, text }, i) => (
@@ -217,7 +203,6 @@ export function Mods() {
         aria-labelledby="compatible-title">
         <div className="container">
           <SectionHead
-            eyebrow="Compatible mods"
             title={
               <>
                 Works with{" "}

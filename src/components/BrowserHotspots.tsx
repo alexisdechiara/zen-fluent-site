@@ -66,7 +66,7 @@ export function BrowserHotspots() {
                   ? "/shots/dark-mica.webp"
                   : "/shots/light-mica.webp"
               }
-              alt="Zen Browser with Zen Fluent: Mica sidebar, WinUI tabs and a framed Wikipedia page"
+              alt="Zen Browser with Zen Fluent: Mica sidebar, Essentials as WinUI cards, WinUI tabs and a framed page"
               width={1280}
               height={800}
               {...{ fetchpriority: "high" }}

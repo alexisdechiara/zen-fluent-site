@@ -17,7 +17,16 @@ function ScrollManager() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
     document.title = titles[pathname] ?? "Page not found · Zen Fluent";
-    if (!hash) window.scrollTo({ top: 0 });
+    if (!hash) {
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    // Links like /mods#compatible or /#install, from another page.
+    const target = document.getElementById(hash.slice(1));
+    if (target)
+      requestAnimationFrame(() =>
+        target.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
   }, [pathname, hash]);
   return null;
 }

@@ -9,7 +9,6 @@ import {
   DesignIdeas24Regular,
   Options24Regular,
   PaintBrush24Regular,
-  Sparkle24Regular,
 } from "@fluentui/react-icons";
 import { BrowserHotspots } from "../components/BrowserHotspots";
 import { CompareSlider } from "../components/CompareSlider";
@@ -46,11 +45,6 @@ const reasons = [
     text: "Every part has its options, from Essentials to the URL bar, with an expert mode for your own gaps and sizes.",
   },
   {
-    icon: Sparkle24Regular,
-    title: "Enhanced, if you want it",
-    text: "An optional JavaScript layer: a command palette, widgets, focus sessions, a settings page. One switch per feature.",
-  },
-  {
     icon: AccessibilityCheckmark24Regular,
     title: "Accessible",
     text: "Windows contrast themes, reduced motion and keyboard focus are handled in every part of the browser.",
@@ -58,7 +52,7 @@ const reasons = [
   {
     icon: Code24Regular,
     title: "Plain CSS at its core",
-    text: "Zen Fluent itself has no JavaScript: install it with Sine and it applies at once, live as you change a setting.",
+    text: "No JavaScript: install it with Sine and it applies at once, live as you change a setting.",
   },
 ];
 
@@ -72,26 +66,18 @@ export function Home() {
       <section className="hero">
         <div className="container hero__grid">
           <div className="hero__copy">
-            <div className="hero__badges rise">
-              <span className="badge badge--beta">
-                <span className="badge__dot" aria-hidden />
-                Beta
-              </span>
-              <span className="badge badge--soft">
-                v{VERSION} · Zen {ZEN_VERSION}
-              </span>
-            </div>
-            <h1 className="rise" style={{ animationDelay: "60ms" }}>
-              Your Zen, <span className="gradient-text">in Fluent</span>
+            <h1 className="rise">
+              <span className="hero__line">The Windows&nbsp;11 look</span>{" "}
+              <span className="hero__line">for Zen Browser</span>
             </h1>
-            <p className="hero__lead rise" style={{ animationDelay: "120ms" }}>
-              Mica, Mica Alt, Acrylic and WinUI 3 controls for Zen Browser, or
-              the Microsoft Edge look. Every part of the browser, redrawn by
-              Windows' own design rules.
+            <p className="hero__lead rise" style={{ animationDelay: "80ms" }}>
+              Zen Fluent is a free theme that redraws every part of Zen with
+              Windows' own design: Mica and Acrylic backgrounds, WinUI controls,
+              Fluent icons. Prefer Microsoft Edge? It has that look too.
             </p>
             <div
               className="hero__actions rise"
-              style={{ animationDelay: "180ms" }}>
+              style={{ animationDelay: "160ms" }}>
               <a
                 className="button button--accent button--large"
                 href="#install">
@@ -102,13 +88,13 @@ export function Home() {
               </Link>
             </div>
             <p className="hero__note rise" style={{ animationDelay: "240ms" }}>
-              Free and open source · CSS only · Works with{" "}
-              {compatibleMods.length} popular mods
+              Free and open source · v{VERSION} beta, for Zen {ZEN_VERSION} ·
+              Works with {compatibleMods.length} popular mods
             </p>
           </div>
           <div
             className="hero__visual rise"
-            style={{ animationDelay: "160ms" }}>
+            style={{ animationDelay: "120ms" }}>
             <BrowserHotspots />
           </div>
         </div>
@@ -120,7 +106,6 @@ export function Home() {
           aria-labelledby="compare-title">
           <div className="container">
             <SectionHead
-              eyebrow="Before / after"
               title="Same Zen, drawn by Windows"
               id="compare-title"
               align="center">
@@ -156,67 +141,34 @@ export function Home() {
       )}
 
       <section className="section" aria-labelledby="why-title">
-        <div className="container">
-          <SectionHead
-            eyebrow="Why Zen Fluent"
-            title="Native, down to the details"
-            id="why-title"
-          />
-          <div className="feature-grid">
-            {reasons.map(({ icon: Icon, title, text }, i) => (
-              <Reveal key={title} className="card feature-card" delay={i * 50}>
-                <span className="feature-card__icon">
-                  <Icon />
-                </span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </Reveal>
+        <div className="container features">
+          <div className="features__intro">
+            <h2 id="why-title">Native, down to the details</h2>
+            <p>
+              Not a new color scheme: Zen Fluent follows WinUI's own rules for
+              materials, controls and corners, in every part of the browser.
+            </p>
+            <Link className="link-arrow" to="/mods">
+              Every feature <ArrowRight16Regular />
+            </Link>
+          </div>
+          <Reveal as="ul" className="settings-list">
+            {reasons.map(({ icon: Icon, title, text }) => (
+              <li key={title} className="settings-row">
+                <Icon className="settings-row__icon" aria-hidden />
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="mods-title">
-        <div className="container">
-          <SectionHead
-            eyebrow="Two mods"
-            title="Start with the look, add the extras"
-            id="mods-title">
-            Both come from the same repository and share one version.
-          </SectionHead>
-          <div className="two-mods">
-            <Reveal className="card mod-card">
-              <span className="tag tag--accent">CSS only</span>
-              <h3>Zen Fluent</h3>
-              <p>
-                The whole look and its settings. No script: it works with Sine's
-                defaults.
-              </p>
-              <CopyField value={REPO} label="the Zen Fluent address" />
-            </Reveal>
-            <Reveal className="card mod-card mod-card--enhanced" delay={80}>
-              <span className="tag">Optional scripts</span>
-              <h3>Zen Fluent Enhanced</h3>
-              <p>
-                Features on top of the look, each with its own switch. Needs
-                Sine's "JS from unofficial sources".
-              </p>
-              <CopyField
-                value={ENHANCED_URL}
-                label="the Zen Fluent Enhanced address"
-              />
-            </Reveal>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="section" id="install" aria-labelledby="install-title">
         <div className="container">
-          <SectionHead
-            eyebrow="Install"
-            title="Three steps, two minutes"
-            id="install-title"
-          />
+          <SectionHead title="Three steps, two minutes" id="install-title" />
           <ol className="steps">
             <Reveal as="li" className="card step">
               <span className="step__num">1</span>
@@ -243,18 +195,33 @@ export function Home() {
             </Reveal>
           </ol>
 
-          <Reveal className="cta-banner">
-            <div>
+          <div className="addons">
+            <Reveal className="card addon addon--enhanced">
+              <h3>Want more? Add Zen Fluent Enhanced</h3>
+              <p>
+                Optional scripts on top of the look: a command palette, widgets,
+                focus sessions, a settings page. One switch per feature. Needs
+                Sine's "JS from unofficial sources".
+              </p>
+              <CopyField
+                value={ENHANCED_URL}
+                label="the Zen Fluent Enhanced address"
+              />
+              <Link className="link-arrow" to="/mods#enhanced">
+                What Enhanced adds <ArrowRight16Regular />
+              </Link>
+            </Reveal>
+            <Reveal className="card addon" delay={80}>
               <h3>Works with your other mods</h3>
               <p>
                 {compatibleMods.length} popular Sine mods checked, with rules
                 for the ones that need them.
               </p>
-            </div>
-            <Link className="button button--accent" to="/mods#compatible">
-              Compatible mods <ArrowRight16Regular />
-            </Link>
-          </Reveal>
+              <Link className="link-arrow" to="/mods#compatible">
+                See the compatible mods <ArrowRight16Regular />
+              </Link>
+            </Reveal>
+          </div>
         </div>
       </section>
     </>

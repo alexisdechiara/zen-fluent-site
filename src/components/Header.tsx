@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Dismiss20Regular,
   Navigation20Regular,
@@ -85,6 +85,11 @@ export function Header() {
             <GitHubIcon size={16} />
             <span>GitHub</span>
           </a>
+          <Link
+            className="button button--accent header-install"
+            to={{ pathname: "/", hash: "#install" }}>
+            Install
+          </Link>
           <button
             type="button"
             className="icon-button menu-toggle"
