@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Zen Fluent: Mica, Acrylic and WinUI 3 for Zen Browser</title>
+    <meta
+      name="description"
+      content="Mica, Mica Alt, Acrylic and WinUI 3 controls for Zen Browser, or the Microsoft Edge look. A Sine mod." />
+    <meta
+      name="theme-color"
+      content="#f3f3f3"
+      media="(prefers-color-scheme: light)" />
+    <meta
+      name="theme-color"
+      content="#121212"
+      media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Zen Fluent" />
+    <meta
+      property="og:description"
+      content="Your Zen, in Fluent: Mica, Acrylic and WinUI 3 controls for Zen Browser." />
+    <meta
+      property="og:image"
+      content="https://zen-fluent-site.vercel.app/shots/dark-mica.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Applies the saved theme before the first paint (no flash).
+      (function () {
+        var theme = null;
+        try {
+          theme = localStorage.getItem("zf-theme");
+        } catch (e) {}
+        if (theme !== "light" && theme !== "dark") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
