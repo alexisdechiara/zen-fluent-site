@@ -9,7 +9,15 @@ import { useLang } from "../i18n";
  * reduced motion, stays on its key frame. It follows the site's theme.
  */
 export type DemoScene =
-  "materials" | "edge" | "urlbar" | "compact" | "settings" | "quick";
+  | "materials"
+  | "edge"
+  | "urlbar"
+  | "compact"
+  | "settings"
+  | "quick"
+  | "split"
+  | "library"
+  | "groups";
 
 function Cursor() {
   return (
@@ -90,8 +98,68 @@ export function FeatureDemo({ scene }: { scene: DemoScene }) {
       <span className="demo__wall" />
       <div className="demo__win">
         <Sidebar />
-        <Page />
+        {scene === "split" ? (
+          <span className="demo__panes">
+            <Page />
+            <Page />
+          </span>
+        ) : (
+          <Page />
+        )}
       </div>
+
+      {scene === "split" && <span className="demo__ghost" />}
+
+      {scene === "library" && (
+        <>
+          <span className="demo__libbtn" />
+          <span className="demo__library">
+            <span className="demo__libtabs">
+              <i>{t("Downloads", "Téléchargements")}</i>
+              <i>{t("History", "Historique")}</i>
+              <i>{t("Spaces", "Espaces")}</i>
+              <span className="demo__libline" />
+            </span>
+            <span className="demo__librows">
+              {Array.from({ length: 5 }, (_, i) => (
+                <i key={i} style={{ "--i": i } as React.CSSProperties} />
+              ))}
+            </span>
+          </span>
+        </>
+      )}
+
+      {scene === "groups" && (
+        <span className="demo__sine">
+          <b>Zen Fluent</b>
+          {[
+            t("Window and menus", "Fenêtre et menus"),
+            t("Essentials", "Essentials"),
+            t("Animations", "Animations"),
+          ].map((label, i) => (
+            <span key={label} className={`demo__group demo__group--${i}`}>
+              <span className="demo__group-head">
+                {label}
+                <span className="demo__chevron" />
+              </span>
+              {i === 0 && (
+                <span className="demo__group-body">
+                  <span>
+                    <span className="demo__row">
+                      {t("Material", "Matériau")}
+                      <span className="demo__select">Mica</span>
+                    </span>
+                    <span className="demo__row">
+                      {t("Menu tint", "Teinte des menus")}
+                      <span className="demo__toggle" />
+                    </span>
+                  </span>
+                </span>
+              )}
+            </span>
+          ))}
+        </span>
+      )}
 
       {scene === "materials" && (
         <span className="demo__chip">

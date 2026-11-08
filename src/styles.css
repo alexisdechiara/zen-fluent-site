@@ -5278,3 +5278,665 @@ kbd {
   -webkit-mask-image: none;
   mask-image: none;
 }
+
+/* --- Split view: a tab dragged to the side, then the active pane --- */
+.demo__panes {
+  display: grid;
+  grid-template-columns: 1fr 0fr;
+  gap: 0;
+  min-width: 0;
+}
+
+.demo__panes .demo__page {
+  padding-inline: calc(var(--u) * 1.2);
+}
+
+.demo__ghost {
+  position: absolute;
+  top: 50%;
+  left: 17%;
+  z-index: 5;
+  width: calc(var(--u) * 7);
+  height: calc(var(--u) * 2.2);
+  border-radius: calc(var(--u) * 0.5);
+  background: var(--surface-strong);
+  box-shadow:
+    0 0 0 1px var(--stroke-strong),
+    var(--shadow-flyout);
+  opacity: 0;
+}
+
+.demo--split .demo__panes {
+  animation-name: demo-split-panes;
+}
+
+.demo--split .demo__panes .demo__page:nth-child(1) {
+  animation-name: demo-split-active-1;
+}
+
+.demo--split .demo__panes .demo__page:nth-child(2) {
+  animation-name: demo-split-active-2;
+}
+
+.demo--split .demo__ghost {
+  animation-name: demo-split-ghost;
+}
+
+.demo--split .demo__cursor {
+  animation-name: demo-split-cursor;
+}
+
+.demo--split .demo__click {
+  animation-name: demo-split-click;
+}
+
+@keyframes demo-split-panes {
+  0%,
+  42%,
+  94%,
+  100% {
+    grid-template-columns: 1fr 0fr;
+    gap: 0;
+  }
+
+  50%,
+  88% {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--u);
+  }
+}
+
+@keyframes demo-split-active-1 {
+  0%,
+  64%,
+  92%,
+  100% {
+    box-shadow: 0 0 0 1px var(--stroke);
+  }
+
+  68%,
+  88% {
+    box-shadow: 0 0 0 2px var(--demo-accent);
+  }
+}
+
+/* The second pane has no width, padding or stroke until the tab lands */
+@keyframes demo-split-active-2 {
+  0%,
+  42%,
+  94%,
+  100% {
+    padding-inline: 0;
+    box-shadow: none;
+    opacity: 0;
+  }
+
+  48% {
+    padding-inline: calc(var(--u) * 1.2);
+    box-shadow: 0 0 0 2px var(--demo-accent);
+    opacity: 1;
+  }
+
+  50%,
+  60% {
+    padding-inline: calc(var(--u) * 1.2);
+    box-shadow: 0 0 0 2px var(--demo-accent);
+    opacity: 1;
+  }
+
+  64%,
+  88% {
+    padding-inline: calc(var(--u) * 1.2);
+    box-shadow: 0 0 0 1px var(--stroke);
+    opacity: 1;
+  }
+}
+
+@keyframes demo-split-ghost {
+  0%,
+  15% {
+    top: 50%;
+    left: 17%;
+    opacity: 0;
+  }
+
+  18% {
+    top: 50%;
+    left: 17%;
+    opacity: 0.95;
+  }
+
+  40% {
+    top: 50%;
+    left: 74%;
+    opacity: 0.95;
+  }
+
+  43%,
+  100% {
+    top: 50%;
+    left: 74%;
+    opacity: 0;
+  }
+}
+
+@keyframes demo-split-cursor {
+  0%,
+  4% {
+    top: 72%;
+    left: 70%;
+  }
+
+  14%,
+  18% {
+    top: 51%;
+    left: 18%;
+  }
+
+  40%,
+  46% {
+    top: 51%;
+    left: 75%;
+  }
+
+  62%,
+  70% {
+    top: 62%;
+    left: 42%;
+  }
+
+  92%,
+  100% {
+    top: 72%;
+    left: 70%;
+  }
+}
+
+@keyframes demo-split-click {
+  0%,
+  15%,
+  17%,
+  65%,
+  67%,
+  100% {
+    opacity: 0;
+    scale: 0.2;
+  }
+
+  16%,
+  66% {
+    opacity: 1;
+    scale: 0.4;
+  }
+
+  21%,
+  71% {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+
+/* --- The Library: opened from the sidebar, then another tab --- */
+.demo__libbtn {
+  position: absolute;
+  bottom: 9%;
+  left: 7.5%;
+  z-index: 3;
+  width: calc(var(--u) * 2.4);
+  height: calc(var(--u) * 2.4);
+  border-radius: calc(var(--u) * 0.5);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--stroke-control);
+}
+
+.demo__library {
+  position: absolute;
+  top: 9%;
+  bottom: 9%;
+  left: 31%;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: var(--u);
+  width: 38%;
+  padding: calc(var(--u) * 1.1);
+  border-radius: calc(var(--u) * 1);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(calc(var(--u) * 3));
+  box-shadow:
+    0 0 0 1px var(--stroke-strong),
+    var(--shadow-flyout);
+}
+
+.demo__libtabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-bottom: calc(var(--u) * 0.6);
+  border-bottom: 1px solid var(--stroke);
+  font-size: calc(var(--u) * 1.05);
+}
+
+.demo__libtabs i {
+  font-style: normal;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.demo__libline {
+  position: absolute;
+  bottom: -1px;
+  left: 8%;
+  width: 17%;
+  height: calc(var(--u) * 0.3);
+  border-radius: 99px;
+  background: var(--demo-accent);
+}
+
+.demo__librows {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.5);
+}
+
+.demo__librows i {
+  position: relative;
+  height: calc(var(--u) * 2.6);
+  border-radius: calc(var(--u) * 0.5);
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--stroke-control);
+}
+
+.demo__librows i::before {
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 4%;
+  aspect-ratio: 1;
+  border-radius: calc(var(--u) * 0.3);
+  background: hsl(calc(var(--i) * 63 + 190) 65% 58%);
+  content: "";
+}
+
+.demo__librows i::after {
+  position: absolute;
+  top: 40%;
+  bottom: 40%;
+  left: 20%;
+  width: calc(60% - var(--i) * 6%);
+  border-radius: 99px;
+  background: var(--stroke-strong);
+  content: "";
+}
+
+.demo--library .demo__library {
+  animation-name: demo-library-panel;
+}
+
+.demo--library .demo__libbtn {
+  animation-name: demo-library-button;
+}
+
+.demo--library .demo__libline {
+  animation-name: demo-library-line;
+}
+
+.demo--library .demo__librows {
+  animation-name: demo-library-rows;
+}
+
+.demo--library .demo__cursor {
+  animation-name: demo-library-cursor;
+}
+
+.demo--library .demo__click {
+  animation-name: demo-library-click;
+}
+
+@keyframes demo-library-panel {
+  0%,
+  17%,
+  88%,
+  100% {
+    opacity: 0;
+    translate: -8% 0;
+  }
+
+  25%,
+  84% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes demo-library-button {
+  0%,
+  15%,
+  88%,
+  100% {
+    background: var(--surface);
+  }
+
+  17%,
+  84% {
+    background: color-mix(in srgb, var(--demo-accent) 22%, var(--surface));
+  }
+}
+
+@keyframes demo-library-line {
+  0%,
+  45%,
+  100% {
+    left: 8%;
+  }
+
+  52%,
+  96% {
+    left: 41.5%;
+  }
+}
+
+@keyframes demo-library-rows {
+  0%,
+  45%,
+  56%,
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  49% {
+    opacity: 0;
+    translate: 0 calc(var(--u) * 0.8);
+  }
+}
+
+@keyframes demo-library-cursor {
+  0%,
+  4% {
+    top: 72%;
+    left: 80%;
+  }
+
+  13%,
+  18% {
+    top: 88%;
+    left: 9%;
+  }
+
+  40%,
+  48% {
+    top: 14%;
+    left: 50%;
+  }
+
+  78%,
+  84% {
+    top: 50%;
+    left: 84%;
+  }
+
+  96%,
+  100% {
+    top: 72%;
+    left: 80%;
+  }
+}
+
+@keyframes demo-library-click {
+  0%,
+  15%,
+  17%,
+  44%,
+  46%,
+  81%,
+  83%,
+  100% {
+    opacity: 0;
+    scale: 0.2;
+  }
+
+  16%,
+  45%,
+  82% {
+    opacity: 1;
+    scale: 0.4;
+  }
+
+  20%,
+  49%,
+  86% {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+
+/* --- Sine's settings: a group unfolds, a setting changes --- */
+.demo__sine {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: 22%;
+  right: 22%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 0.5);
+  padding: calc(var(--u) * 1.3);
+  border-radius: calc(var(--u) * 1);
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: blur(calc(var(--u) * 3));
+  box-shadow:
+    0 0 0 1px var(--stroke-strong),
+    var(--shadow-flyout);
+}
+
+.demo__sine > b {
+  margin-bottom: calc(var(--u) * 0.5);
+  font-size: calc(var(--u) * 1.5);
+}
+
+.demo__group {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: calc(var(--u) * 0.6);
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--stroke-control);
+}
+
+.demo__group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--u) * 0.9) var(--u);
+}
+
+.demo__chevron {
+  width: calc(var(--u) * 0.7);
+  height: calc(var(--u) * 0.7);
+  border-right: 1.5px solid var(--text-2);
+  border-bottom: 1.5px solid var(--text-2);
+  rotate: 45deg;
+  translate: 0 -25%;
+}
+
+.demo__group-body {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+
+.demo__group-body > span {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.demo__group-body .demo__row {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: inset 0 1px 0 var(--stroke);
+}
+
+.demo__select {
+  padding: calc(var(--u) * 0.2) calc(var(--u) * 0.8);
+  border-radius: calc(var(--u) * 0.4);
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--stroke-control);
+}
+
+.demo--groups .demo__group--0 .demo__group-body {
+  animation-name: demo-groups-body;
+}
+
+.demo--groups .demo__group--0 .demo__chevron {
+  animation-name: demo-groups-chevron;
+}
+
+.demo--groups .demo__toggle {
+  animation-name: demo-groups-toggle;
+}
+
+.demo--groups .demo__toggle::after {
+  animation-name: demo-groups-knob;
+}
+
+.demo--groups .demo__cursor {
+  animation-name: demo-groups-cursor;
+}
+
+.demo--groups .demo__click {
+  animation-name: demo-groups-click;
+}
+
+@keyframes demo-groups-body {
+  0%,
+  22%,
+  90%,
+  100% {
+    grid-template-rows: 0fr;
+  }
+
+  30%,
+  82% {
+    grid-template-rows: 1fr;
+  }
+}
+
+@keyframes demo-groups-chevron {
+  0%,
+  22%,
+  90%,
+  100% {
+    rotate: 45deg;
+    translate: 0 -25%;
+  }
+
+  30%,
+  82% {
+    rotate: 225deg;
+    translate: 0 25%;
+  }
+}
+
+@keyframes demo-groups-toggle {
+  0%,
+  50%,
+  96%,
+  100% {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--text-2);
+  }
+
+  53%,
+  92% {
+    background: var(--demo-accent);
+    box-shadow: inset 0 0 0 1px transparent;
+  }
+}
+
+@keyframes demo-groups-knob {
+  0%,
+  50%,
+  96%,
+  100% {
+    left: 12%;
+    background: var(--text-2);
+  }
+
+  53%,
+  92% {
+    left: 58%;
+    background: var(--on-accent);
+  }
+}
+
+@keyframes demo-groups-cursor {
+  0%,
+  4% {
+    top: 80%;
+    left: 85%;
+  }
+
+  16%,
+  24% {
+    top: 25%;
+    left: 60%;
+  }
+
+  44%,
+  54% {
+    top: 40%;
+    left: 72%;
+  }
+
+  74%,
+  82% {
+    top: 25%;
+    left: 60%;
+  }
+
+  96%,
+  100% {
+    top: 80%;
+    left: 85%;
+  }
+}
+
+@keyframes demo-groups-click {
+  0%,
+  20%,
+  22%,
+  50%,
+  52%,
+  78%,
+  80%,
+  100% {
+    opacity: 0;
+    scale: 0.2;
+  }
+
+  21%,
+  51%,
+  79% {
+    opacity: 1;
+    scale: 0.4;
+  }
+
+  25%,
+  55%,
+  83% {
+    opacity: 0;
+    scale: 1.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo--split .demo__panes {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--u);
+  }
+}

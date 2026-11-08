@@ -18,13 +18,23 @@ import { GitHubIcon } from "../components/Icons";
 import { compatibleMods, docsAnchor } from "../data/mods";
 import { DOCS_URL, ENHANCED_URL } from "../data/site";
 import { CopyField } from "../components/CopyField";
+import { FeatureDemo, type DemoScene } from "../components/FeatureDemo";
 import { localize, useLang } from "../i18n";
 
-const showcase = [
+const showcase: {
+  title: string;
+  text: string;
+  image: string;
+  alt: string;
+  doc: string;
+  demo: DemoScene;
+  fr: { title: string; text: string; alt: string };
+}[] = [
   {
     title: "The Microsoft Edge look",
     text: "A second complete style, from Edge and Fluent 2: a pill address bar, light cards for Essentials and the selected tab, and the page in its frame. Enhanced's Quick Settings switch between Windows 11 and Edge in one click.",
     image: "edge",
+    demo: "edge",
     alt: "Zen Browser in Zen Fluent's Microsoft Edge style",
     doc: "settings/appearance.md",
     fr: {
@@ -37,6 +47,7 @@ const showcase = [
     title: "A URL bar that feels like Windows",
     text: "A WinUI text box with its accent line, or Edge's pill. Floating, it can be white or black, the window's material, your space's color or see-through glass, and the page behind it dims.",
     image: "urlbar",
+    demo: "urlbar",
     alt: "The floating URL bar over a dimmed page",
     doc: "settings/url-bar.md",
     fr: {
@@ -49,6 +60,7 @@ const showcase = [
     title: "Compact mode, done right",
     text: "The sidebar slides in on hover with an Acrylic background, a hint shows where it hides, and the page can fill the whole window.",
     image: "compact",
+    demo: "compact",
     alt: "Compact mode with the sidebar shown on hover",
     doc: "settings/sidebar.md",
     fr: {
@@ -61,6 +73,7 @@ const showcase = [
     title: "Split view and Glance",
     text: "Panes with WinUI corners and an accent outline on the active one; Glance opens over a dimmed page with round Acrylic buttons.",
     image: "split",
+    demo: "split",
     alt: "Split view with two pages side by side",
     doc: "settings/window-and-menus.md",
     fr: {
@@ -73,6 +86,7 @@ const showcase = [
     title: "Zen's Library in Fluent",
     text: "Downloads, history, spaces and media as WinUI lists, with Enhanced's Widgets, Focus and Quick settings as extra tabs.",
     image: "library",
+    demo: "library",
     alt: "Zen's Library drawn as WinUI lists",
     doc: "settings/sidebar.md",
     fr: {
@@ -85,6 +99,7 @@ const showcase = [
     title: "Settings for every part",
     text: "More than 200 settings in collapsible groups, in Sine's dialog or in Enhanced's own settings page: fills and shapes per component, Essentials, extensions row, animations, and an expert mode.",
     image: "sine",
+    demo: "groups",
     alt: "Zen Fluent's settings in Sine",
     doc: "settings/essentials.md",
     fr: {
@@ -224,14 +239,8 @@ export function Mods() {
                     <Open16Regular />
                   </a>
                 </div>
-                <figure className="showcase__media">
-                  <img
-                    src={`/shots/${item.image}.webp`}
-                    alt={item.alt}
-                    width={1280}
-                    height={800}
-                    loading="lazy"
-                  />
+                <figure className="showcase__media" title={item.alt}>
+                  <FeatureDemo scene={item.demo} />
                 </figure>
               </Reveal>
             );
