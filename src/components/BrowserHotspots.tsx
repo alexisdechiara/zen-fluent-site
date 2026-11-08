@@ -5,7 +5,24 @@ import {
   Dismiss16Regular,
 } from "@fluentui/react-icons";
 import { hotspots } from "../data/hotspots";
+import { reducedMotion } from "../motion";
 import { useTheme } from "../theme";
+
+const ALT =
+  "Zen Browser with Zen Fluent: Mica sidebar, Essentials as WinUI cards, WinUI tabs and a framed page";
+
+/** The materials the hero cycles through, on screenshots of one layout
+ * (the dots must stay on their spot). Light has one material for now. */
+const materials = {
+  dark: [
+    { src: "/shots/dark-mica.webp", label: "Mica" },
+    { src: "/shots/dark-mica-alt.webp", label: "Mica Alt" },
+    { src: "/shots/dark-acrylic-orange.webp", label: "Acrylic" },
+  ],
+  light: [{ src: "/shots/light-mica.webp", label: "Mica" }],
+};
+
+const CYCLE_MS = 5200;
 
 /**
  * The hero's browser: a Zen Fluent screenshot with pulsing dots. A dot opens
@@ -18,6 +35,32 @@ export function BrowserHotspots() {
   const rootRef = useRef<HTMLDivElement>(null);
   const popupId = useId();
   const current = hotspots.find((h) => h.id === active) ?? null;
+  const shots = materials[theme];
+  const [slide, setSlide] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => setSlide(0), [theme]);
+
+  // Mica, Mica Alt, Acrylic, slowly: never while a dot is open, the pointer
+  // is over the window, the window is off screen or motion is reduced.
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || shots.length < 2 || reducedMotion()) return;
+    let visible = false;
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    observer.observe(el);
+    const timer = window.setInterval(() => {
+      if (visible && !paused && !active && !document.hidden) {
+        setSlide((i) => (i + 1) % shots.length);
+      }
+    }, CYCLE_MS);
+    return () => {
+      observer.disconnect();
+      window.clearInterval(timer);
+    };
+  }, [shots.length, paused, active]);
   const index = current ? hotspots.indexOf(current) : -1;
 
   useEffect(() => {
@@ -56,22 +99,40 @@ export function BrowserHotspots() {
   const vertical = current && current.y > 55 ? "up" : "down";
 
   return (
-    <div className="browser" ref={rootRef}>
+    <div
+      className="browser"
+      ref={rootRef}
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}>
       <div className="browser__frame">
         <div className="browser__screen">
           <div className="browser__canvas">
-            <img
-              src={
-                theme === "dark"
-                  ? "/shots/dark-mica.webp"
-                  : "/shots/light-mica.webp"
-              }
-              alt="Zen Browser with Zen Fluent: Mica sidebar, Essentials as WinUI cards, WinUI tabs and a framed page"
-              width={1280}
-              height={800}
-              {...{ fetchpriority: "high" }}
-              draggable={false}
-            />
+            {shots.map((shot, i) => (
+              <img
+                key={shot.src}
+                className={`browser__shot${i === slide ? " is-shown" : ""}`}
+                src={shot.src}
+                alt={i === 0 ? ALT : ""}
+                aria-hidden={i !== 0}
+                width={1280}
+                height={800}
+                {...(i === 0
+                  ? { fetchpriority: "high" }
+                  : { loading: "lazy" as const })}
+                draggable={false}
+              />
+            ))}
+            {shots.length > 1 && (
+              <span className="material-chip" aria-hidden>
+                {shots.map((shot, i) => (
+                  <span
+                    key={shot.label}
+                    className={i === slide ? "is-current" : undefined}>
+                    {shot.label}
+                  </span>
+                ))}
+              </span>
+            )}
             {hotspots.map((spot, i) => (
               <button
                 key={spot.id}

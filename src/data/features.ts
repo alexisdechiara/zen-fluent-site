@@ -18,6 +18,9 @@ export interface Feature {
   keys?: string;
   /** Only on the development branch: comes with the next release. */
   next?: boolean;
+  /** A short clip recorded in Zen (public/clips/*.mp4), and its still. */
+  video?: string;
+  poster?: string;
   doc: string;
 }
 

@@ -1190,13 +1190,6 @@ code {
   clip-path: inset(0 calc(100% - var(--pos)) 0 0);
 }
 
-.compare.is-hinting .compare__before,
-.compare.is-hinting .compare__divider {
-  transition:
-    clip-path 0.5s var(--ease),
-    left 0.5s var(--ease);
-}
-
 .compare__divider {
   position: absolute;
   top: 0;
@@ -3621,4 +3614,413 @@ kbd {
   .hotspot-popup {
     border: 1px solid CanvasText;
   }
+}
+
+/* ---------- Motion: WinUI's timings (167 / 250 / 333 ms), decelerating ---------- */
+
+/* Accents from Windows' palette (Header's picker, theme.tsx). Blue is the
+   default above; hover, press and the soft wash come from the base. */
+:root[data-accent] {
+  --accent-hover: color-mix(in srgb, var(--accent) 90%, var(--bg));
+  --accent-press: color-mix(in srgb, var(--accent) 80%, var(--bg));
+  --accent-soft: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+:root[data-accent="blue"] {
+  --accent-hover: #196ebf;
+  --accent-press: #3183ca;
+  --accent-soft: rgba(0, 95, 184, 0.08);
+}
+
+:root[data-theme="dark"][data-accent="blue"] {
+  --accent-hover: #5bbbe8;
+  --accent-press: #56a9d1;
+  --accent-soft: rgba(96, 205, 255, 0.1);
+}
+
+:root[data-accent="violet"] {
+  --accent: #744da9;
+  --accent-text: #5a2e94;
+}
+
+:root[data-theme="dark"][data-accent="violet"] {
+  --accent: #c2a9ec;
+  --accent-text: #e1d2fa;
+}
+
+:root[data-accent="mint"] {
+  --accent: #007a6c;
+  --accent-text: #005a4f;
+}
+
+:root[data-theme="dark"][data-accent="mint"] {
+  --accent: #4fe0c0;
+  --accent-text: #9ff5df;
+}
+
+:root[data-accent="orange"] {
+  --accent: #b3460e;
+  --accent-text: #8a3200;
+}
+
+:root[data-theme="dark"][data-accent="orange"] {
+  --accent: #ffa064;
+  --accent-text: #ffcfac;
+}
+
+:root[data-accent="pink"] {
+  --accent: #bf0077;
+  --accent-text: #96005c;
+}
+
+:root[data-theme="dark"][data-accent="pink"] {
+  --accent: #ff7ac9;
+  --accent-text: #ffbde2;
+}
+
+:root[data-accent="graphite"] {
+  --accent: #515c6b;
+  --accent-text: #3b4450;
+}
+
+:root[data-theme="dark"][data-accent="graphite"] {
+  --accent: #a9b5c4;
+  --accent-text: #d3dbe5;
+}
+
+/* A theme or an accent: the new look grows as a circle from the button
+   (motion.ts). Nothing else transitions meanwhile. */
+.is-vt,
+.is-vt *,
+.is-vt *::before,
+.is-vt *::after {
+  transition: none !important;
+}
+
+.is-vt::view-transition-old(root) {
+  animation: none;
+}
+
+.is-vt::view-transition-new(root) {
+  animation: vt-circle 0.52s var(--ease) both;
+}
+
+@keyframes vt-circle {
+  from {
+    clip-path: circle(0 at var(--vt-x) var(--vt-y));
+  }
+
+  to {
+    clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+  }
+}
+
+/* The accent picker: a WinUI flyout of swatches under its button */
+.accent-picker {
+  position: relative;
+}
+
+.accent-flyout {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  padding: 12px;
+  border: 1px solid var(--stroke-strong);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  box-shadow: var(--shadow-flyout);
+}
+
+.accent-flyout__title {
+  margin: 0 0 10px;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.accent-flyout__swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 32px);
+  gap: 8px;
+}
+
+.accent-swatch {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  color: #fff;
+  cursor: pointer;
+  transition: scale 0.167s var(--ease-out);
+}
+
+.accent-swatch:hover {
+  scale: 1.08;
+}
+
+.accent-swatch[aria-pressed="true"] {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.accent-swatch:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .accent-flyout {
+    animation: flyout 0.25s var(--ease) both;
+  }
+}
+
+/* The hero's materials: screenshots crossfading, and a chip naming them */
+.browser__shot + .browser__shot {
+  position: absolute;
+  inset: 0;
+}
+
+.browser__shot {
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-out);
+}
+
+.browser__shot.is-shown,
+.browser__shot:only-of-type {
+  opacity: 1;
+}
+
+.material-chip {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--stroke-strong);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-strong) 82%, transparent);
+  box-shadow: var(--shadow-flyout);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  font-size: 12px;
+  translate: -50% 0;
+}
+
+.material-chip > span {
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: var(--text-2);
+  transition:
+    background-color 0.333s var(--ease-out),
+    color 0.333s var(--ease-out);
+}
+
+.material-chip > span.is-current {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* The installer, small and looping (InstallerDemo.tsx) */
+.setup-demo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  border: 1px solid var(--stroke-strong);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow-raise);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.setup-demo__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+  padding: 0 8px;
+  color: var(--text-2);
+}
+
+.setup-demo__caption {
+  display: flex;
+  gap: 10px;
+}
+
+.setup-demo__caption i {
+  width: 7px;
+  height: 1px;
+  background: currentcolor;
+}
+
+.setup-demo__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 112px;
+  padding: 4px 12px 8px;
+}
+
+.setup-demo__step {
+  color: var(--text-3);
+  font-size: 10px;
+}
+
+.setup-demo__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.setup-demo__tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.setup-demo__tile {
+  display: flex;
+  flex-direction: column;
+  padding: 7px 8px;
+  border: 1px solid var(--stroke-control);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+}
+
+.setup-demo__tile small {
+  color: var(--text-2);
+  font-size: 10px;
+}
+
+.setup-demo__progress {
+  height: 3px;
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--stroke-strong);
+}
+
+.setup-demo__progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.setup-demo__done {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 20px;
+}
+
+.setup-demo__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 7px 10px;
+  border-top: 1px solid var(--stroke);
+  background: var(--surface);
+}
+
+.setup-demo__button {
+  min-width: 56px;
+  padding: 3px 8px;
+  border: 1px solid var(--stroke-control);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.setup-demo__button--accent {
+  border-color: transparent;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.setup-demo[data-step="0"] .setup-demo__button:first-child {
+  visibility: hidden;
+}
+
+.setup-demo__tile.is-picked {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .setup-demo__title,
+  .setup-demo__tiles,
+  .setup-demo__progress,
+  .setup-demo__done {
+    animation: setup-in 0.333s var(--ease-out) both;
+  }
+
+  /* The pick lands a beat after the page, as a click would */
+  .setup-demo__tile.is-picked {
+    animation: setup-pick 0.25s var(--ease-out) 0.7s both;
+  }
+
+  .setup-demo__progress span {
+    animation: setup-fill 1.9s cubic-bezier(0.45, 0, 0.2, 1) both;
+  }
+
+  .setup-demo__done {
+    animation: setup-done 0.333s var(--ease) both;
+  }
+}
+
+@keyframes setup-in {
+  from {
+    opacity: 0;
+    translate: 12px 0;
+  }
+}
+
+@keyframes setup-pick {
+  from {
+    border-color: var(--stroke-control);
+    box-shadow: inset 0 0 0 1px transparent;
+  }
+}
+
+@keyframes setup-fill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes setup-done {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+
+/* Feature clips (FeatureVideo.tsx) */
+.highlight__shot video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sample__clip {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
 }

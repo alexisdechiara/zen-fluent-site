@@ -3,6 +3,7 @@ import {
   ChevronLeft16Filled,
   ChevronRight16Filled,
 } from "@fluentui/react-icons";
+import { reducedMotion } from "../motion";
 
 interface Props {
   before: { src: string; label: string; alt: string };
@@ -15,6 +16,9 @@ interface Props {
   start?: number;
 }
 
+/** Where the handle starts its wipe, before scrolling: mostly Zen. */
+const WIPE_FROM = 92;
+
 /** Before / after slider: drag anywhere, or use the arrow keys on the handle. */
 export function CompareSlider({
   before,
@@ -26,7 +30,7 @@ export function CompareSlider({
 }: Props) {
   const [position, setPosition] = useState(start);
   const [dragging, setDragging] = useState(false);
-  const [hinted, setHinted] = useState(false);
+  const [touched, setTouched] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
   const moveTo = useCallback((clientX: number) => {
@@ -50,35 +54,36 @@ export function CompareSlider({
     };
   }, [dragging, moveTo]);
 
-  // A short sweep the first time the slider comes into view shows it moves.
+  // Scrolling into view wipes Zen's look away, down to `start`; the first
+  // drag or key hands the handle over. No wipe with reduced motion.
   useEffect(() => {
     const el = rootRef.current;
-    if (
-      !el ||
-      hinted ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-        setHinted(true);
-        el.classList.add("is-hinting");
-        const frames = [start - 10, start + 10, start];
-        frames.forEach((value, i) =>
-          setTimeout(() => setPosition(value), 350 + i * 550),
-        );
-        setTimeout(
-          () => el.classList.remove("is-hinting"),
-          350 + frames.length * 550,
-        );
-      },
-      { threshold: 0.6 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [hinted, start]);
+    if (!el || touched || reducedMotion()) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = el.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      // 0 when its top enters the bottom of the screen, 1 when it is centered
+      const progress = Math.min(
+        1,
+        Math.max(0, (viewport - rect.top) / (viewport / 2 + rect.height / 2)),
+      );
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setPosition(WIPE_FROM + (start - WIPE_FROM) * eased);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [touched, start]);
 
   return (
     <div
@@ -93,7 +98,7 @@ export function CompareSlider({
       onPointerDown={(e) => {
         if (e.button !== 0) return;
         e.preventDefault();
-        rootRef.current?.classList.remove("is-hinting");
+        setTouched(true);
         setDragging(true);
         moveTo(e.clientX);
         rootRef.current
@@ -149,7 +154,7 @@ export function CompareSlider({
         aria-label={`Comparison: ${before.label} on the left, ${after.label} on the right`}
         aria-valuetext={`${Math.round(position)}% ${before.label}`}
         onChange={(e) => {
-          rootRef.current?.classList.remove("is-hinting");
+          setTouched(true);
           setPosition(Number(e.target.value));
         }}
       />

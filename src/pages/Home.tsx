@@ -10,6 +10,8 @@ import {
 import { BrowserHotspots } from "../components/BrowserHotspots";
 import { CompareSlider } from "../components/CompareSlider";
 import { CopyField } from "../components/CopyField";
+import { FeatureVideo } from "../components/FeatureVideo";
+import { InstallerDemo } from "../components/InstallerDemo";
 import { ModBadge } from "../components/ModBadge";
 import { Reveal } from "../components/Reveal";
 import { formatDate, releases } from "../data/changelog";
@@ -58,6 +60,8 @@ const highlights: {
   alt: string;
   mod: Mod;
   group: string;
+  /** A clip recorded in Zen (public/clips), shown instead of the still. */
+  video?: string;
 }[] = [
   {
     title: "Mica, Mica Alt or Acrylic",
@@ -298,13 +302,21 @@ export function Home() {
                         "--zoom": item.zoom,
                       } as React.CSSProperties
                     }>
-                    <img
-                      src={`/shots/${item.image}.webp`}
-                      alt={item.alt}
-                      width={1280}
-                      height={800}
-                      loading="lazy"
-                    />
+                    {item.video ? (
+                      <FeatureVideo
+                        src={item.video}
+                        poster={`/shots/${item.image}.webp`}
+                        alt={item.alt}
+                      />
+                    ) : (
+                      <img
+                        src={`/shots/${item.image}.webp`}
+                        alt={item.alt}
+                        width={1280}
+                        height={800}
+                        loading="lazy"
+                      />
+                    )}
                   </span>
                 </Link>
                 <div className="highlight__text">
@@ -391,9 +403,7 @@ export function Home() {
             </div>
 
             <div className="install-panel__cell">
-              <span className="icon-tile" aria-hidden>
-                <ArrowDownload20Regular />
-              </span>
+              <InstallerDemo />
               <h3>The installer</h3>
               <p className="install-panel__kind">Recommended on Windows</p>
               <ol className="install__steps">

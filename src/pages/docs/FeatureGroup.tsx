@@ -1,6 +1,7 @@
 import { Navigate, useParams } from "react-router-dom";
 import { ChevronDown16Regular, Open16Regular } from "@fluentui/react-icons";
 import { CopyField } from "../../components/CopyField";
+import { FeatureVideo } from "../../components/FeatureVideo";
 import { ModBadge } from "../../components/ModBadge";
 import { featureGroups, featureId, type Feature } from "../../data/features";
 import { DOCS_URL } from "../../data/site";
@@ -17,6 +18,14 @@ function Sample({ feature }: { feature: Feature }) {
       </h2>
       <div className="sample__card">
         <div className="sample__stage">
+          {feature.video && (
+            <FeatureVideo
+              className="sample__clip"
+              src={feature.video}
+              poster={feature.poster ?? "/shots/dark-mica.webp"}
+              alt={feature.name}
+            />
+          )}
           <p>{feature.text}</p>
           <dl className="sample__meta">
             <div>
