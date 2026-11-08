@@ -1,7 +1,7 @@
 # Zen Fluent website
 
 The site of [Zen Fluent](https://github.com/alexisdechiara/zen-fluent), the
-Fluent / WinUI 3 mod for Zen Browser: <https://zen-fluent-site.vercel.app>.
+Fluent / WinUI 3 mod for Zen Browser: <https://zen-fluent.vercel.app>.
 
 Vite, React and TypeScript, deployed on Vercel. No UI framework: the styles
 in `src/styles.css` follow WinUI 3 / Fluent 2 tokens, in light and dark.
