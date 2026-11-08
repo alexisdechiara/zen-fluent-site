@@ -131,7 +131,7 @@ export function BrowserHotspots() {
                   target="_blank"
                   rel="noreferrer"
                   className="link-arrow">
-                  Settings <ArrowRight16Regular />
+                  Settings on GitHub <ArrowRight16Regular />
                 </a>
                 <div className="hotspot-popup__steps">
                   <button

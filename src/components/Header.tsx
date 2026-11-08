@@ -13,6 +13,7 @@ import { REPO_URL } from "../data/site";
 const links = [
   { to: "/", label: "Overview", end: true },
   { to: "/mods", label: "Features & mods" },
+  { to: "/docs", label: "Docs" },
   { to: "/changelog", label: "Changelog" },
 ];
 

@@ -11,6 +11,8 @@ interface Props {
   height: number;
   /** Called when an image fails to load (the pair is missing). */
   onMissing?: () => void;
+  /** Where the handle starts, in percent of the width. */
+  start?: number;
 }
 
 /** Before / after slider: drag anywhere, or use the arrow keys on the handle. */
@@ -20,8 +22,9 @@ export function CompareSlider({
   width,
   height,
   onMissing,
+  start = 50,
 }: Props) {
-  const [position, setPosition] = useState(50);
+  const [position, setPosition] = useState(start);
   const [dragging, setDragging] = useState(false);
   const [hinted, setHinted] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -62,7 +65,7 @@ export function CompareSlider({
         observer.disconnect();
         setHinted(true);
         el.classList.add("is-hinting");
-        const frames = [38, 62, 50];
+        const frames = [start - 10, start + 10, start];
         frames.forEach((value, i) =>
           setTimeout(() => setPosition(value), 350 + i * 550),
         );
@@ -75,7 +78,7 @@ export function CompareSlider({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [hinted]);
+  }, [hinted, start]);
 
   return (
     <div
@@ -120,12 +123,12 @@ export function CompareSlider({
 
       <span
         className="compare__label compare__label--before"
-        style={{ opacity: position < 18 ? 0 : 1 }}>
+        style={{ opacity: position < 8 ? 0 : 1 }}>
         {before.label}
       </span>
       <span
         className="compare__label compare__label--after"
-        style={{ opacity: position > 82 ? 0 : 1 }}>
+        style={{ opacity: position > 92 ? 0 : 1 }}>
         {after.label}
       </span>
 

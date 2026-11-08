@@ -11,6 +11,7 @@ import {
   Sparkle24Regular,
   Timer24Regular,
 } from "@fluentui/react-icons";
+import { Link } from "react-router-dom";
 import { Reveal } from "../components/Reveal";
 import { SectionHead } from "../components/SectionHead";
 import { GitHubIcon } from "../components/Icons";
@@ -20,7 +21,7 @@ import { CopyField } from "../components/CopyField";
 
 const showcase = [
   {
-    title: "Or the Microsoft Edge look",
+    title: "The Microsoft Edge look",
     text: "A second complete style, from Edge and Fluent 2: a pill address bar, light cards for Essentials and the selected tab, and the page in its frame. Enhanced's Quick Settings switch between Windows 11 and Edge in one click.",
     image: "edge",
     alt: "Zen Browser in Zen Fluent's Microsoft Edge style",
@@ -66,8 +67,8 @@ const showcase = [
 const enhanced = [
   {
     icon: Search24Regular,
-    title: "Command palette",
-    text: "Every command, tab and setting from one search box.",
+    title: "Command Palette actions",
+    text: "With the Zen Command Palette mod, every Zen Fluent setting, preset and panel from one search box.",
   },
   {
     icon: Apps24Regular,
@@ -82,7 +83,7 @@ const enhanced = [
   {
     icon: ColorBackground24Regular,
     title: "Site color",
-    text: "The window takes a tint of the site you read, and glows when it changes.",
+    text: "The window takes a tint of the site you read, over your space's theme.",
   },
   {
     icon: SlideLayout24Regular,
@@ -146,7 +147,7 @@ export function Mods() {
                   href={`${DOCS_URL}/${item.doc}`}
                   target="_blank"
                   rel="noreferrer">
-                  Its settings <Open16Regular />
+                  Settings on GitHub <Open16Regular />
                 </a>
               </div>
               <figure className="showcase__media">
@@ -184,6 +185,11 @@ export function Mods() {
               </Reveal>
             ))}
           </div>
+          <p className="section-cta">
+            <Link className="button" to="/docs/features?mod=enhanced">
+              Everything Enhanced adds, with its defaults
+            </Link>
+          </p>
           <Reveal className="enhanced-install">
             <p>
               Install it from Sine with this address, then turn on{" "}
