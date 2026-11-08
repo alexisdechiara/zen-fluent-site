@@ -5,11 +5,9 @@ import {
   Dismiss16Regular,
 } from "@fluentui/react-icons";
 import { hotspots } from "../data/hotspots";
+import { localize, useLang } from "../i18n";
 import { reducedMotion } from "../motion";
 import { useTheme } from "../theme";
-
-const ALT =
-  "Zen Browser with Zen Fluent: Mica sidebar, Essentials as WinUI cards, WinUI tabs and a framed page";
 
 /** The materials the hero cycles through, on screenshots of one layout
  * (the dots must stay on their spot). Light has one material for now. */
@@ -30,11 +28,13 @@ const CYCLE_MS = 5200;
  */
 export function BrowserHotspots() {
   const { theme } = useTheme();
+  const { lang, t } = useLang();
   const [active, setActive] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const popupId = useId();
-  const current = hotspots.find((h) => h.id === active) ?? null;
+  const found = hotspots.find((h) => h.id === active);
+  const current = found ? localize(found, lang) : null;
   const shots = materials[theme];
   const [slide, setSlide] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -61,7 +61,7 @@ export function BrowserHotspots() {
       window.clearInterval(timer);
     };
   }, [shots.length, paused, active]);
-  const index = current ? hotspots.indexOf(current) : -1;
+  const index = found ? hotspots.indexOf(found) : -1;
 
   useEffect(() => {
     if (!active) return;
@@ -112,7 +112,14 @@ export function BrowserHotspots() {
                 key={shot.src}
                 className={`browser__shot${i === slide ? " is-shown" : ""}`}
                 src={shot.src}
-                alt={i === 0 ? ALT : ""}
+                alt={
+                  i === 0
+                    ? t(
+                        "Zen Browser with Zen Fluent: Mica sidebar, Essentials as WinUI cards, WinUI tabs and a framed page",
+                        "Zen Browser avec Zen Fluent : barre latérale en Mica, Essentials en cartes WinUI, onglets WinUI et page encadrée",
+                      )
+                    : ""
+                }
                 aria-hidden={i !== 0}
                 width={1280}
                 height={800}
@@ -144,7 +151,10 @@ export function BrowserHotspots() {
                   top: `${spot.y}%`,
                   animationDelay: `${0.6 + i * 0.08}s`,
                 }}
-                aria-label={`${spot.title} (${i + 1} of ${hotspots.length})`}
+                aria-label={t(
+                  `${spot.title} (${i + 1} of ${hotspots.length})`,
+                  `${spot.fr.title} (${i + 1} sur ${hotspots.length})`,
+                )}
                 aria-expanded={active === spot.id}
                 aria-controls={active === spot.id ? popupId : undefined}
                 onClick={() => open(spot.id)}>
@@ -179,7 +189,7 @@ export function BrowserHotspots() {
                 <button
                   type="button"
                   className="icon-button icon-button--small"
-                  aria-label="Close"
+                  aria-label={t("Close", "Fermer")}
                   onClick={() => setActive(null)}>
                   <Dismiss16Regular />
                 </button>
@@ -192,20 +202,21 @@ export function BrowserHotspots() {
                   target="_blank"
                   rel="noreferrer"
                   className="link-arrow">
-                  Settings on GitHub <ArrowRight16Regular />
+                  {t("Settings on GitHub", "Les réglages sur GitHub")}{" "}
+                  <ArrowRight16Regular />
                 </a>
                 <div className="hotspot-popup__steps">
                   <button
                     type="button"
                     className="button button--subtle button--small"
                     onClick={() => step(-1)}>
-                    Previous
+                    {t("Previous", "Précédent")}
                   </button>
                   <button
                     type="button"
                     className="button button--small"
                     onClick={() => step(1)}>
-                    Next
+                    {t("Next", "Suivant")}
                   </button>
                 </div>
               </div>
@@ -216,7 +227,11 @@ export function BrowserHotspots() {
       <p
         className={`browser__hint${touched ? " is-hidden" : ""}`}
         aria-hidden={touched}>
-        <CursorClick20Regular /> Click a dot to explore the details
+        <CursorClick20Regular />{" "}
+        {t(
+          "Click a dot to explore the details",
+          "Cliquez sur un point pour découvrir les détails",
+        )}
       </p>
     </div>
   );

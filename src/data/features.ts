@@ -22,6 +22,8 @@ export interface Feature {
   video?: string;
   poster?: string;
   doc: string;
+  /** Its name and text in French. */
+  fr: { name: string; text: string };
 }
 
 export interface FeatureGroup {
@@ -29,6 +31,7 @@ export interface FeatureGroup {
   title: string;
   intro: string;
   features: Feature[];
+  fr: { title: string; intro: string };
 }
 
 export const featureGroups: FeatureGroup[] = [
@@ -36,6 +39,10 @@ export const featureGroups: FeatureGroup[] = [
     id: "look",
     title: "Look and materials",
     intro: "The window, its material and its geometry.",
+    fr: {
+      title: "Style et matériaux",
+      intro: "La fenêtre, son matériau et sa géométrie.",
+    },
     features: [
       {
         name: "Mica, Mica Alt or Acrylic",
@@ -43,6 +50,10 @@ export const featureGroups: FeatureGroup[] = [
         text: "The Windows 11 material behind the sidebar and toolbars, tinted with your space's color. On Windows 11 it comes from Mica For Everyone; on Linux and macOS, from your compositor's blur.",
         mod: "core",
         doc: "settings/appearance.md",
+        fr: {
+          name: "Mica, Mica Alt ou Acrylic",
+          text: "Le matériau de Windows 11 derrière la barre latérale et les barres d'outils, teinté de la couleur de votre espace. Sous Windows 11 il vient de Mica For Everyone ; sous Linux et macOS, du flou de votre compositeur.",
+        },
       },
       {
         name: "WinUI 3 or Microsoft Edge style",
@@ -50,6 +61,10 @@ export const featureGroups: FeatureGroup[] = [
         text: "Two complete styles: WinUI controls, corners and accent lines, or Edge's Fluent 2 geometry with a pill URL bar, raised tabs and 8 px page corners.",
         mod: "core",
         doc: "core.md#edge-style",
+        fr: {
+          name: "Style WinUI 3 ou Microsoft Edge",
+          text: "Deux styles complets : les contrôles, coins et lignes d'accent de WinUI, ou la géométrie Fluent 2 d'Edge avec une barre d'adresse en pilule, des onglets surélevés et des coins de page de 8 px.",
+        },
       },
       {
         name: "Corners, gaps and density",
@@ -57,12 +72,20 @@ export const featureGroups: FeatureGroup[] = [
         text: "WinUI or Zen corners, the gaps around the page, and WinUI's standard or compact sizing for every control.",
         mod: "core",
         doc: "settings/appearance.md",
+        fr: {
+          name: "Coins, marges et densité",
+          text: "Les coins de WinUI ou de Zen, les marges autour de la page, et la taille standard ou compacte de WinUI pour chaque contrôle.",
+        },
       },
       {
         name: "Font",
         text: "Segoe UI Variable, Aptos, the system font or one of your own.",
         mod: "core",
         doc: "settings/appearance.md",
+        fr: {
+          name: "Police",
+          text: "Segoe UI Variable, Aptos, la police du système ou l'une des vôtres.",
+        },
       },
       {
         name: "Expert mode",
@@ -70,12 +93,20 @@ export const featureGroups: FeatureGroup[] = [
         text: "A custom value for every size: gaps, corners, Essentials, the extensions row, the sidebar's padding.",
         mod: "core",
         doc: "settings/appearance.md",
+        fr: {
+          name: "Mode expert",
+          text: "Une valeur personnalisée pour chaque taille : marges, coins, Essentials, rangée d'extensions, marges intérieures de la barre latérale.",
+        },
       },
       {
         name: "Zones",
         text: "Each area (sidebar, URL bar, menus, Library…) can keep Zen's own look while the rest takes Fluent.",
         mod: "core",
         doc: "settings/zones.md",
+        fr: {
+          name: "Zones",
+          text: "Chaque zone (barre latérale, barre d'adresse, menus, Bibliothèque…) peut garder le style de Zen pendant que le reste passe en Fluent.",
+        },
       },
     ],
   },
@@ -83,6 +114,11 @@ export const featureGroups: FeatureGroup[] = [
     id: "colors",
     title: "Colors",
     intro: "The accent, the tint, and colors that follow what you browse.",
+    fr: {
+      title: "Couleurs",
+      intro:
+        "L'accent, la teinte, et des couleurs qui suivent ce que vous lisez.",
+    },
     features: [
       {
         name: "Accent color",
@@ -90,6 +126,10 @@ export const featureGroups: FeatureGroup[] = [
         text: "The Windows accent color, seven others or any CSS color. Light or dark follows Zen.",
         mod: "core",
         doc: "settings/appearance.md",
+        fr: {
+          name: "Couleur d'accent",
+          text: "La couleur d'accent de Windows, sept autres ou n'importe quelle couleur CSS. Clair ou sombre suit Zen.",
+        },
       },
       {
         name: "Space color and tint",
@@ -97,6 +137,10 @@ export const featureGroups: FeatureGroup[] = [
         text: "The material takes your space's color, with the tint opacity you choose.",
         mod: "core",
         doc: "settings/appearance.md",
+        fr: {
+          name: "Couleur de l'espace et teinte",
+          text: "Le matériau prend la couleur de votre espace, avec l'opacité de teinte que vous choisissez.",
+        },
       },
       {
         name: "Moving gradient",
@@ -104,6 +148,10 @@ export const featureGroups: FeatureGroup[] = [
         text: "The space's gradient drifts slowly behind the window.",
         mod: "core",
         doc: "settings/animations.md",
+        fr: {
+          name: "Dégradé animé",
+          text: "Le dégradé de l'espace dérive lentement derrière la fenêtre.",
+        },
       },
       {
         name: "Icon colors",
@@ -112,6 +160,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Couleurs des icônes",
+          text: "Lit la couleur de l'icône de chaque onglet : les anneaux, bordures et remplissages de l'Essential sélectionné prennent exactement cette couleur.",
+        },
       },
       {
         name: "Adaptive accent",
@@ -120,6 +172,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Accent adaptatif",
+          text: "L'accent suit le site de l'onglet sélectionné, d'après son icône. La teinte Mica suit aussi.",
+        },
       },
       {
         name: "Site color",
@@ -128,6 +184,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Couleur du site",
+          text: "La fenêtre prend une teinte légère, moyenne ou forte du site que vous lisez, par-dessus le thème de l'espace.",
+        },
       },
       {
         name: "Window glow",
@@ -136,6 +196,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Lueur de la fenêtre",
+          text: "Une douce lueur de la nouvelle couleur quand vous changez d'espace, de thème ou de mode. Jamais en changeant d'onglet.",
+        },
       },
       {
         name: "Folder colors",
@@ -144,6 +208,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Couleurs des dossiers",
+          text: "Le menu contextuel d'un dossier propose les couleurs d'accent de Windows ; chaque sous-dossier garde la sienne.",
+        },
       },
     ],
   },
@@ -151,36 +219,60 @@ export const featureGroups: FeatureGroup[] = [
     id: "sidebar",
     title: "Sidebar, Essentials and tabs",
     intro: "Where you spend most of your time in Zen.",
+    fr: {
+      title: "Barre latérale, Essentials et onglets",
+      intro: "Là où vous passez le plus de temps dans Zen.",
+    },
     features: [
       {
         name: "WinUI tabs",
         text: "The accent pill on the selected tab, unloaded tabs dimmed to tertiary text, animated sound bars, container colors and a slot to drop tabs in an empty folder.",
         mod: "core",
         doc: "settings/tabs.md",
+        fr: {
+          name: "Onglets WinUI",
+          text: "La pilule d'accent sur l'onglet sélectionné, les onglets déchargés estompés, des barres de son animées, les couleurs des conteneurs et un emplacement pour déposer des onglets dans un dossier vide.",
+        },
       },
       {
         name: "Essentials as WinUI cards",
         text: "2 to 6 per row, ten ways to mark the selected one (glow, Arc border, taskbar pill…), icon size, labels and an open-page dot.",
         mod: "core",
         doc: "settings/essentials.md",
+        fr: {
+          name: "Les Essentials en cartes WinUI",
+          text: "De 2 à 6 par ligne, dix façons de marquer celui qui est sélectionné (halo, bordure façon Arc, pilule de barre des tâches…), la taille des icônes, des libellés et un point pour les pages ouvertes.",
+        },
       },
       {
         name: "Extensions row",
         text: "Pinned extensions as a WinUI row, above the Essentials or at the bottom, with its columns, rows and badges.",
         mod: "core",
         doc: "settings/extensions.md",
+        fr: {
+          name: "Rangée d'extensions",
+          text: "Les extensions épinglées en rangée WinUI, au-dessus des Essentials ou en bas, avec ses colonnes, ses lignes et ses badges.",
+        },
       },
       {
         name: "Variants",
         text: "A fill (Solid, Standard, Tint, Outline, Subtle, Transparent, Translucent) and a shape for each component.",
         mod: "core",
         doc: "settings/variants.md",
+        fr: {
+          name: "Variantes",
+          text: "Un remplissage (Solid, Standard, Tint, Outline, Subtle, Transparent, Translucent) et une forme pour chaque composant.",
+        },
       },
       {
         name: "Compact mode",
         text: "The sidebar slides in on hover over Acrylic, and the page can fill the whole window. Collapsed, the sidebar is a WinUI NavigationView pane.",
         mod: "core",
         doc: "settings/sidebar.md",
+        fr: {
+          name: "Mode compact",
+          text: "La barre latérale glisse au survol, sur fond Acrylic, et la page peut remplir toute la fenêtre. Repliée, la barre latérale devient un volet NavigationView de WinUI.",
+        },
       },
       {
         name: "Tab hover cards",
@@ -189,6 +281,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Cartes de survol des onglets",
+          text: "Une carte à côté de l'onglet, avec une miniature, l'adresse, l'état et des boutons pour copier, couper le son, décharger ou fermer.",
+        },
       },
       {
         name: "Ctrl+Tab as Alt+Tab",
@@ -198,6 +294,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Tab",
         doc: "enhanced.md",
+        fr: {
+          name: "Ctrl+Tab comme Alt+Tab",
+          text: "Maintenez Ctrl et appuyez sur Tab : les onglets de l'espace en miniatures, du plus récent au plus ancien, comme dans Windows 11.",
+        },
       },
       {
         name: "Tab numbers",
@@ -206,6 +306,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Numéros d'onglets",
+          text: "Maintenez Ctrl un instant : chaque onglet affiche le numéro que Ctrl+1 à Ctrl+9 sélectionne.",
+        },
       },
       {
         name: "Tab archiving",
@@ -215,6 +319,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+Shift+A",
         doc: "enhanced.md",
+        fr: {
+          name: "Archivage des onglets",
+          text: "Les onglets inutilisés depuis des heures sont rangés dans une archive puis fermés, prêts à revenir ; une annulation est proposée.",
+        },
       },
       {
         name: "Sleeping tabs and Performance",
@@ -224,6 +332,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+Shift+P",
         doc: "enhanced.md",
+        fr: {
+          name: "Onglets en veille et Performances",
+          text: "Les onglets inactifs sont déchargés après un délai, comme dans Edge, et un panneau montre la mémoire utilisée par Zen.",
+        },
       },
       {
         name: "Tab notes",
@@ -233,6 +345,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+Shift+N",
         doc: "enhanced.md",
+        fr: {
+          name: "Notes d'onglets",
+          text: "Les notes d'onglets de Firefox, activées, avec la liste de toutes les notes.",
+        },
       },
       {
         name: "Extensions under the Essentials",
@@ -241,6 +357,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Extensions sous les Essentials",
+          text: "Place la rangée d'extensions entre les Essentials et les onglets, ce que le CSS ne sait pas faire.",
+        },
       },
       {
         name: "Fluent icons in the icon picker",
@@ -249,6 +369,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Icônes Fluent dans le sélecteur d'icônes",
+          text: "142 icônes Fluent pour vos espaces, dossiers et onglets épinglés.",
+        },
       },
     ],
   },
@@ -256,24 +380,40 @@ export const featureGroups: FeatureGroup[] = [
     id: "urlbar",
     title: "URL bar, split view and Glance",
     intro: "Getting around: the address, links and pages side by side.",
+    fr: {
+      title: "Barre d'adresse, vue partagée et Glance",
+      intro: "Se déplacer : l'adresse, les liens et les pages côte à côte.",
+    },
     features: [
       {
         name: "URL bar shape and accent line",
         text: "A WinUI text box or Edge's pill, with WinUI's accent line on focus.",
         mod: "core",
         doc: "settings/url-bar.md",
+        fr: {
+          name: "Forme de la barre d'adresse et ligne d'accent",
+          text: "Une zone de texte WinUI ou la pilule d'Edge, avec la ligne d'accent de WinUI au focus.",
+        },
       },
       {
         name: "Floating URL bar",
         text: "Solid, Standard (the material), Tint (your space's color) or Translucent, over a dimmed page.",
         mod: "core",
         doc: "settings/url-bar.md",
+        fr: {
+          name: "Barre d'adresse flottante",
+          text: "Solid, Standard (le matériau), Tint (la couleur de votre espace) ou Translucent, sur une page assombrie.",
+        },
       },
       {
         name: "Split view and Glance",
         text: "Panes with WinUI corners and an accent outline on the active one; Glance over a dimmed page with Acrylic buttons.",
         mod: "core",
         doc: "settings/window-and-menus.md",
+        fr: {
+          name: "Vue partagée et Glance",
+          text: "Des volets aux coins WinUI avec un contour d'accent sur l'actif ; Glance sur une page assombrie avec des boutons Acrylic.",
+        },
       },
       {
         name: "Snap layouts",
@@ -283,6 +423,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         keys: "Ctrl+Alt+Shift+Z",
         doc: "enhanced.md",
+        fr: {
+          name: "Dispositions d'ancrage",
+          text: "Les dispositions d'ancrage de Windows 11 pour la vue partagée : survolez le bouton Agrandir, choisissez une disposition, puis l'Assistant d'ancrage la remplit.",
+        },
       },
       {
         name: "Breadcrumb address",
@@ -291,6 +435,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Adresse en fil d'Ariane",
+          text: "L'adresse se lit comme dans l'Explorateur de fichiers : le site, chaque dossier, puis la page, chacun à un clic.",
+        },
       },
       {
         name: "Glance link preview",
@@ -299,6 +447,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Aperçu des liens Glance",
+          text: "Maintenez la touche de Glance sur un lien : une carte montre où il mène avant de l'ouvrir.",
+        },
       },
     ],
   },
@@ -306,42 +458,70 @@ export const featureGroups: FeatureGroup[] = [
     id: "window",
     title: "Window, menus and pages",
     intro: "Everything around the page, down to Zen's own screens.",
+    fr: {
+      title: "Fenêtre, menus et pages",
+      intro: "Tout ce qui entoure la page, jusqu'aux écrans de Zen.",
+    },
     features: [
       {
         name: "Framed page and caption buttons",
         text: "The page in a card with WinUI corners and a hairline; caption buttons in Windows' styles.",
         mod: "core",
         doc: "settings/window-and-menus.md",
+        fr: {
+          name: "Page encadrée et boutons de fenêtre",
+          text: "La page dans une carte aux coins WinUI avec un fin contour ; les boutons de fenêtre dans les styles de Windows.",
+        },
       },
       {
         name: "Menus, panels and dialogs",
         text: "WinUI flyouts for menus, the site panel, permissions, downloads and extensions, with Acrylic and Fluent shadows.",
         mod: "core",
         doc: "core.md",
+        fr: {
+          name: "Menus, panneaux et boîtes de dialogue",
+          text: "Des menus volants WinUI pour les menus, le panneau du site, les permissions, les téléchargements et les extensions, avec Acrylic et les ombres Fluent.",
+        },
       },
       {
         name: "Notifications",
         text: "Notification bars as WinUI InfoBars, permission prompts as a TeachingTip, and Zen's toasts.",
         mod: "core",
         doc: "core.md",
+        fr: {
+          name: "Notifications",
+          text: "Les barres de notification en InfoBar WinUI, les demandes de permission en TeachingTip, et les toasts de Zen.",
+        },
       },
       {
         name: "Library, Firefox sidebar and media",
         text: "Zen's Library as WinUI lists, bookmarks and history, the media card and the Picture-in-Picture player.",
         mod: "core",
         doc: "core.md",
+        fr: {
+          name: "Bibliothèque, barre latérale de Firefox et médias",
+          text: "La Bibliothèque de Zen en listes WinUI, les marque-pages et l'historique, la carte média et le lecteur Picture-in-Picture.",
+        },
       },
       {
         name: "Internal pages",
         text: "Zen's settings, add-ons, about:config and the new tab page in Fluent.",
         mod: "core",
         doc: "core.md",
+        fr: {
+          name: "Pages internes",
+          text: "Les paramètres de Zen, les modules, about:config et la page Nouvel onglet en Fluent.",
+        },
       },
       {
         name: "Loading bar and scrollbars",
         text: "WinUI's indeterminate progress bar while a page loads, and thin scrollbars that widen on hover.",
         mod: "core",
         doc: "settings/window-and-menus.md",
+        fr: {
+          name: "Barre de chargement et barres de défilement",
+          text: "La barre de progression indéterminée de WinUI pendant le chargement d'une page, et des barres de défilement fines qui s'élargissent au survol.",
+        },
       },
     ],
   },
@@ -349,6 +529,10 @@ export const featureGroups: FeatureGroup[] = [
     id: "productivity",
     title: "Productivity",
     intro: "Windows' own tools, brought to the browser.",
+    fr: {
+      title: "Productivité",
+      intro: "Les outils de Windows, dans le navigateur.",
+    },
     features: [
       {
         name: "Focus sessions",
@@ -357,6 +541,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Sessions de concentration",
+          text: "Comme dans l'appli Horloge de Windows : un minuteur qui peut masquer la barre latérale, couper le son des onglets et bloquer les sites qui distraient.",
+        },
       },
       {
         name: "Widgets and shelf",
@@ -366,6 +554,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+Shift+W",
         doc: "enhanced.md",
+        fr: {
+          name: "Widgets et étagère",
+          text: "L'heure, ce qui joue, vos téléchargements, et une étagère pour garder liens, textes et images.",
+        },
       },
       {
         name: "Start page",
@@ -374,6 +566,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Page de démarrage",
+          text: "Les nouveaux onglets ouvrent un message d'accueil, un champ de recherche et vos sites favoris, comme dans Windows 11 et Edge.",
+        },
       },
       {
         name: "Quick window",
@@ -383,6 +579,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+Shift+O",
         doc: "enhanced.md",
+        fr: {
+          name: "Fenêtre rapide",
+          text: "Une petite fenêtre pour jeter un œil à un lien, comme Little Arc d'Arc.",
+        },
       },
       {
         name: "Keyboard shortcuts sheet",
@@ -392,6 +592,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         keys: "Ctrl+Alt+Shift+K",
         doc: "enhanced.md",
+        fr: {
+          name: "Aide-mémoire des raccourcis",
+          text: "Tous les raccourcis de Firefox, Zen et Zen Fluent sur une carte, avec un champ de recherche.",
+        },
       },
       {
         name: "Command Palette actions",
@@ -400,6 +604,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Actions de la Command Palette",
+          text: "Avec le mod Zen Command Palette, sa palette reçoit chaque réglage, thème et panneau de Zen Fluent.",
+        },
       },
       {
         name: "Browsing stats",
@@ -409,6 +617,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+Shift+S",
         doc: "enhanced.md",
+        fr: {
+          name: "Statistiques de navigation",
+          text: "Le temps passé, les visites et les sites les plus vus aujourd'hui, sur 7 ou 30 jours, d'après votre historique.",
+        },
       },
       {
         name: "Boost editor extras",
@@ -417,6 +629,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Extras de l'éditeur Boost",
+          text: "Les tuiles Colonne étroite, Sans mouvement, Masquer les images et Sépia dans l'éditeur Boost de Zen.",
+        },
       },
       {
         name: "Shortcuts",
@@ -426,6 +642,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         keys: "Ctrl+Alt+Shift+D, T, M",
         doc: "enhanced.md",
+        fr: {
+          name: "Raccourcis",
+          text: "Changez la densité, le thème de la fenêtre ou le matériau au clavier.",
+        },
       },
     ],
   },
@@ -433,18 +653,30 @@ export const featureGroups: FeatureGroup[] = [
     id: "settings",
     title: "Settings and setup",
     intro: "Where you change all of this.",
+    fr: {
+      title: "Réglages et installation",
+      intro: "Là où tout cela se règle.",
+    },
     features: [
       {
         name: "Settings in Sine",
         text: "More than a hundred settings in collapsible groups, in the gear of Zen Fluent's card.",
         mod: "core",
         doc: "settings/README.md",
+        fr: {
+          name: "Réglages dans Sine",
+          text: "Plus d'une centaine de réglages en groupes repliables, dans l'engrenage de la carte de Zen Fluent.",
+        },
       },
       {
         name: "Zen settings in one place",
         text: "Zen's own options that matter for the look (Glance, the tab preview) next to Zen Fluent's.",
         mod: "core",
         doc: "settings/zen-settings.md",
+        fr: {
+          name: "Les réglages de Zen au même endroit",
+          text: "Les options de Zen qui comptent pour le style (Glance, l'aperçu des onglets) à côté de celles de Zen Fluent.",
+        },
       },
       {
         name: "Settings page",
@@ -454,6 +686,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         keys: "Ctrl+Alt+Shift+F",
         doc: "enhanced.md",
+        fr: {
+          name: "Page de paramètres",
+          text: "Une page Zen Fluent dans les paramètres de Zen, dessinée comme les Paramètres de Windows : un aperçu, des thèmes, un dessin de la fenêtre pour les variantes, une recherche, l'import et l'export.",
+        },
       },
       {
         name: "Mods",
@@ -461,6 +697,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Mods",
+          text: "La boutique de Sine sur la page de paramètres, avec la compatibilité de chaque mod avec Zen Fluent, l'installation, la mise à jour et la désinstallation.",
+        },
       },
       {
         name: "Quick Settings",
@@ -469,6 +709,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Paramètres rapides",
+          text: "Un onglet de la Bibliothèque avec les réglages principaux et des thèmes en un clic : Windows 11, Microsoft Edge, Barre des tâches, Arc, Compact.",
+        },
       },
       {
         name: "Settings per space",
@@ -478,6 +722,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         next: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Réglages par espace",
+          text: "Un espace peut avoir son propre mode, style, matériau, accent et sa densité, appliqués quand vous y passez.",
+        },
       },
       {
         name: "Welcome tour",
@@ -487,6 +735,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         next: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Visite de bienvenue",
+          text: "Au premier démarrage, un thème, l'accent et quelques fonctions à activer, puis où trouver les réglages.",
+        },
       },
       {
         name: "French interface",
@@ -495,6 +747,10 @@ export const featureGroups: FeatureGroup[] = [
         on: true,
         next: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Interface en français",
+          text: "La page de paramètres, les menus, les toasts et les panneaux de la Bibliothèque parlent français quand Zen le fait.",
+        },
       },
     ],
   },
@@ -502,6 +758,10 @@ export const featureGroups: FeatureGroup[] = [
     id: "web",
     title: "Web pages and AI",
     intro: "Fluent beyond the browser's own interface.",
+    fr: {
+      title: "Pages web et IA",
+      intro: "Fluent au-delà de l'interface du navigateur.",
+    },
     features: [
       {
         name: "PDF viewer",
@@ -510,6 +770,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: true,
         doc: "enhanced.md",
+        fr: {
+          name: "Lecteur PDF",
+          text: "Le lecteur PDF de Firefox avec une barre d'outils façon Mica, des champs et boutons WinUI et l'accent.",
+        },
       },
       {
         name: "Fluent controls on websites",
@@ -518,6 +782,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Contrôles Fluent sur les sites",
+          text: "Les boutons, champs, cases à cocher et curseurs qu'un site ne stylise pas prennent le style WinUI.",
+        },
       },
       {
         name: "AI controls page",
@@ -526,6 +794,10 @@ export const featureGroups: FeatureGroup[] = [
         mod: "enhanced",
         on: false,
         doc: "enhanced.md",
+        fr: {
+          name: "Page des contrôles d'IA",
+          text: "Les contrôles d'IA de Firefox dans les paramètres de Zen : chaque fonction d'IA disponible, activée ou bloquée.",
+        },
       },
       {
         name: "AI chatbot panel",
@@ -535,6 +807,10 @@ export const featureGroups: FeatureGroup[] = [
         on: false,
         keys: "Ctrl+Alt+X",
         doc: "enhanced.md",
+        fr: {
+          name: "Panneau d'assistant IA",
+          text: "L'assistant de Firefox dans la barre latérale : Claude, ChatGPT, Gemini, HuggingChat ou Mistral.",
+        },
       },
     ],
   },
@@ -542,6 +818,11 @@ export const featureGroups: FeatureGroup[] = [
     id: "a11y",
     title: "Motion, icons and accessibility",
     intro: "WinUI's motion, Fluent icons, and the care for everyone.",
+    fr: {
+      title: "Mouvement, icônes et accessibilité",
+      intro:
+        "Les animations de WinUI, les icônes Fluent, et une attention pour chacun.",
+    },
     features: [
       {
         name: "Fluent icons",
@@ -549,36 +830,60 @@ export const featureGroups: FeatureGroup[] = [
         text: "Toolbar buttons, folders, the Library and spaces take Fluent icons. Needs “Allow the mod's icons”.",
         mod: "core",
         doc: "settings/zones.md",
+        fr: {
+          name: "Icônes Fluent",
+          text: "Les boutons de la barre d'outils, les dossiers, la Bibliothèque et les espaces prennent des icônes Fluent. Demande « Allow the mod's icons ».",
+        },
       },
       {
         name: "Animated icons",
         text: "WinUI's AnimatedIcon motion: Back and Forward nudge, Reload turns, the Library books hop.",
         mod: "core",
         doc: "settings/animations.md",
+        fr: {
+          name: "Icônes animées",
+          text: "Les mouvements AnimatedIcon de WinUI : Précédent et Suivant avancent d'un cran, Actualiser tourne, les livres de la Bibliothèque sautillent.",
+        },
       },
       {
         name: "Animations",
         text: "WinUI flyout and URL bar opening animations, button fills and press scale.",
         mod: "core",
         doc: "settings/animations.md",
+        fr: {
+          name: "Animations",
+          text: "Les animations d'ouverture des menus volants et de la barre d'adresse de WinUI, le remplissage des boutons et leur enfoncement.",
+        },
       },
       {
         name: "Contrast themes",
         text: "With Windows high contrast, every color switches to the system's, with visible edges and Highlight focus.",
         mod: "core",
         doc: "core.md#accessibility",
+        fr: {
+          name: "Thèmes de contraste",
+          text: "Avec le contraste élevé de Windows, chaque couleur passe à celle du système, avec des bords visibles et un focus en surbrillance.",
+        },
       },
       {
         name: "Reduced motion",
         text: "With reduced motion, every animation stops; controls change state without moving.",
         mod: "core",
         doc: "core.md#accessibility",
+        fr: {
+          name: "Animations réduites",
+          text: "Avec les animations réduites, tout s'arrête ; les contrôles changent d'état sans bouger.",
+        },
       },
       {
         name: "Keyboard focus",
         text: "WinUI's two-ring focus visual on every control, never shown on a click.",
         mod: "core",
         doc: "core.md#accessibility",
+        fr: {
+          name: "Focus au clavier",
+          text: "L'indicateur de focus à deux anneaux de WinUI sur chaque contrôle, jamais affiché au clic.",
+        },
       },
     ],
   },

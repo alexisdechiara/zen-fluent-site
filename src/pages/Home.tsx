@@ -12,9 +12,10 @@ import { CompareSlider } from "../components/CompareSlider";
 import { CopyField } from "../components/CopyField";
 import { FeatureVideo } from "../components/FeatureVideo";
 import { InstallerDemo } from "../components/InstallerDemo";
+import { kindLabel, localize, useLang } from "../i18n";
 import { ModBadge } from "../components/ModBadge";
 import { Reveal } from "../components/Reveal";
-import { formatDate, releases } from "../data/changelog";
+import { releases } from "../data/changelog";
 import { compare } from "../data/compare";
 import { countOf, totalWithEnhanced, type Mod } from "../data/features";
 import { compatibleMods } from "../data/mods";
@@ -62,6 +63,7 @@ const highlights: {
   group: string;
   /** A clip recorded in Zen (public/clips), shown instead of the still. */
   video?: string;
+  fr: { title: string; text: string; alt: string };
 }[] = [
   {
     title: "Mica, Mica Alt or Acrylic",
@@ -70,6 +72,11 @@ const highlights: {
     focus: "0% 0%",
     zoom: 3.4,
     alt: "Zen Fluent with the Mica Alt material in dark mode",
+    fr: {
+      title: "Mica, Mica Alt ou Acrylic",
+      text: "Le matériau de Windows 11 derrière toute la fenêtre, teinté de la couleur de votre espace.",
+      alt: "Zen Fluent avec le matériau Mica Alt en mode sombre",
+    },
     mod: "core",
     group: "look",
   },
@@ -80,6 +87,11 @@ const highlights: {
     focus: "0% 0%",
     zoom: 3.4,
     alt: "Zen Fluent's Microsoft Edge style",
+    fr: {
+      title: "Ou le style Microsoft Edge",
+      text: "Un second style complet : la barre d'adresse en pilule d'Edge, des onglets surélevés et une page encadrée.",
+      alt: "Le style Microsoft Edge de Zen Fluent",
+    },
     mod: "core",
     group: "look",
   },
@@ -90,6 +102,11 @@ const highlights: {
     focus: "72% 11%",
     zoom: 1.85,
     alt: "The floating URL bar over a dimmed page",
+    fr: {
+      title: "Une barre d'adresse comme sous Windows",
+      text: "Une zone de texte WinUI ou une pilule ; flottante, elle prend le matériau, la couleur de votre espace ou du verre.",
+      alt: "La barre d'adresse flottante sur une page assombrie",
+    },
     mod: "core",
     group: "urlbar",
   },
@@ -100,6 +117,11 @@ const highlights: {
     focus: "0% 0%",
     zoom: 2.9,
     alt: "Compact mode with the sidebar shown on hover",
+    fr: {
+      title: "Le mode compact, bien fait",
+      text: "La barre latérale glisse sur un fond Acrylic et la page remplit toute la fenêtre.",
+      alt: "Le mode compact avec la barre latérale affichée au survol",
+    },
     mod: "core",
     group: "sidebar",
   },
@@ -110,6 +132,11 @@ const highlights: {
     focus: "83% 17%",
     zoom: 1.43,
     alt: "Zen Fluent Enhanced's settings page",
+    fr: {
+      title: "Une page de paramètres comme les Paramètres de Windows",
+      text: "Chaque réglage dans les paramètres de Zen, avec des thèmes, un dessin de la fenêtre et les mods de Sine.",
+      alt: "La page de paramètres de Zen Fluent Enhanced",
+    },
     mod: "enhanced",
     group: "settings",
   },
@@ -120,6 +147,11 @@ const highlights: {
     focus: "0% 0%",
     zoom: 2.6,
     alt: "Quick Settings in Zen's Library",
+    fr: {
+      title: "Paramètres rapides et thèmes",
+      text: "Windows 11, Edge, Barre des tâches, Arc ou Compact en un clic, depuis la Bibliothèque de Zen.",
+      alt: "Les Paramètres rapides dans la Bibliothèque de Zen",
+    },
     mod: "enhanced",
     group: "settings",
   },
@@ -135,6 +167,14 @@ const mods: {
   linkLabel: string;
   image: string;
   alt: string;
+  fr: {
+    lead: string;
+    rest: string;
+    text: string;
+    points: string[];
+    linkLabel: string;
+    alt: string;
+  };
 }[] = [
   {
     mod: "core",
@@ -153,6 +193,21 @@ const mods: {
     linkLabel: `All ${countOf("core")} Zen Fluent features`,
     image: "zen-corners-violet",
     alt: "Zen Fluent with Zen's corners and a violet accent",
+    fr: {
+      lead: "Zen Fluent.",
+      rest: "Tout le style, en CSS.",
+      text: "Il s'applique dès que Sine l'installe, sous Windows, Linux et macOS, et chaque partie a ses réglages.",
+      points: [
+        "Mica, Mica Alt et Acrylic",
+        "Style WinUI 3 ou Microsoft Edge",
+        "Votre accent, vos coins et votre densité",
+        "Plus d'une centaine de réglages",
+        "Chaque zone peut garder le style de Zen",
+        "Thèmes de contraste, animations réduites",
+      ],
+      linkLabel: `Les ${countOf("core")} fonctions de Zen Fluent`,
+      alt: "Zen Fluent avec les coins de Zen et un accent violet",
+    },
   },
   {
     mod: "enhanced",
@@ -171,11 +226,27 @@ const mods: {
     linkLabel: `All ${totalWithEnhanced} Enhanced features`,
     image: "settings-page",
     alt: "Zen Fluent Enhanced's settings page in Zen's settings",
+    fr: {
+      lead: "Zen Fluent Enhanced.",
+      rest: `Tout ce qui précède, plus ${countOf("enhanced")} extras.`,
+      text: "Optionnel, pour ce que le CSS ne sait pas faire. Il installe Zen Fluent avec lui, et chaque extra a son interrupteur.",
+      points: [
+        "Une page de paramètres, les Paramètres rapides",
+        "Couleur du site, accent adaptatif",
+        "Cartes de survol, Ctrl+Tab comme Alt+Tab",
+        "Archivage des onglets, onglets en veille",
+        "Dispositions d'ancrage, sessions de concentration",
+        "Widgets, une page de démarrage",
+      ],
+      linkLabel: `Les ${totalWithEnhanced} fonctions d'Enhanced`,
+      alt: "La page de paramètres de Zen Fluent Enhanced dans les paramètres de Zen",
+    },
   },
 ];
 
 export function Home() {
   const { theme } = useTheme();
+  const { lang, t, date: formatDate } = useLang();
   const pair = compare[theme] ?? compare.light;
   const [compareMissing, setCompareMissing] = useState(false);
 
@@ -184,28 +255,34 @@ export function Home() {
       <section className="hero">
         <div className="container hero__split">
           <h1 className="rise">
-            The Windows&nbsp;11 look{" "}
-            <span className="heading-rest">for Zen Browser</span>
+            {t("The Windows\u00a011 look", "Le style de Windows\u00a011")}{" "}
+            <span className="heading-rest">
+              {t("for Zen Browser", "pour Zen Browser")}
+            </span>
           </h1>
           <div className="hero__aside rise" style={{ animationDelay: "80ms" }}>
             <p className="hero__lead">
-              Zen Fluent redraws every part of Zen with Windows' own design:
-              Mica and Acrylic backgrounds, WinUI controls, Fluent icons. Or the
-              Microsoft Edge look.
+              {t(
+                "Zen Fluent redraws every part of Zen with Windows' own design: Mica and Acrylic backgrounds, WinUI controls, Fluent icons. Or the Microsoft Edge look.",
+                "Zen Fluent redessine chaque partie de Zen avec le design de Windows : fonds Mica et Acrylic, contrôles WinUI, icônes Fluent. Ou le style de Microsoft Edge.",
+              )}
             </p>
             <div className="hero__actions">
               <a
                 className="button button--accent button--large"
                 href={INSTALLER_URL}>
-                <ArrowDownload20Regular /> Download for Windows
+                <ArrowDownload20Regular />{" "}
+                {t("Download for Windows", "Télécharger pour Windows")}
               </a>
               <a className="button button--large" href="#install">
-                Other ways to install
+                {t("Other ways to install", "Autres façons d'installer")}
               </a>
             </div>
             <p className="hero__note">
-              Installs Zen Fluent and Enhanced · v{VERSION} · Free and open
-              source
+              {t(
+                `Installs Zen Fluent and Enhanced · v${VERSION} · Free and open source`,
+                `Installe Zen Fluent et Enhanced · v${VERSION} · Gratuit et open source`,
+              )}
             </p>
           </div>
         </div>
@@ -217,14 +294,28 @@ export function Home() {
         </div>
       </section>
 
-      <section className="section section--statement" aria-label="In short">
+      <section
+        className="section section--statement"
+        aria-label={t("In short", "En bref")}>
         <div className="container">
           <Reveal as="p" className="statement">
-            Not a new color scheme. Zen Fluent follows{" "}
-            <mark className="chip chip--accent">WinUI's own rules</mark> for
-            materials, controls, corners and motion in{" "}
-            <mark className="chip">every part of the browser</mark> from the
-            sidebar and tabs to menus, dialogs and Zen's own pages.
+            {t(
+              <>
+                Not a new color scheme. Zen Fluent follows{" "}
+                <mark className="chip chip--accent">WinUI's own rules</mark> for
+                materials, controls, corners and motion in{" "}
+                <mark className="chip">every part of the browser</mark> from the
+                sidebar and tabs to menus, dialogs and Zen's own pages.
+              </>,
+              <>
+                Pas une simple palette de couleurs. Zen Fluent suit{" "}
+                <mark className="chip chip--accent">les règles de WinUI</mark>{" "}
+                pour les matériaux, les contrôles, les coins et le mouvement,
+                dans <mark className="chip">chaque partie du navigateur</mark>,
+                de la barre latérale et des onglets aux menus, aux boîtes de
+                dialogue et aux pages de Zen.
+              </>,
+            )}
           </Reveal>
         </div>
       </section>
@@ -234,11 +325,16 @@ export function Home() {
           <div className="container">
             <div className="section-head section-head--center">
               <h2 id="compare-title">
-                <SplitHeading lead="Same Zen." rest="Drawn by Windows." />
+                <SplitHeading
+                  lead={t("Same Zen.", "Le même Zen.")}
+                  rest={t("Drawn by Windows.", "Dessiné par Windows.")}
+                />
               </h2>
               <p className="section-head__lead">
-                Drag the handle to compare Zen's default look with Zen Fluent:
-                same window, same tabs, same page.
+                {t(
+                  "Scroll or drag the handle to compare Zen's default look with Zen Fluent: same window, same tabs, same page.",
+                  "Faites défiler ou glissez la poignée pour comparer le style par défaut de Zen avec Zen Fluent : même fenêtre, mêmes onglets, même page.",
+                )}
               </p>
             </div>
             <Reveal className="compare-wrap">
@@ -250,20 +346,41 @@ export function Home() {
                 before={{
                   src: pair.before,
                   label: "Zen",
-                  alt: "Zen Browser with its default look",
+                  alt: t(
+                    "Zen Browser with its default look",
+                    "Zen Browser avec son style par défaut",
+                  ),
                 }}
                 after={{
                   src: pair.after,
                   label: "Zen + Zen Fluent",
-                  alt: "The same window with Zen Fluent",
+                  alt: t(
+                    "The same window with Zen Fluent",
+                    "La même fenêtre avec Zen Fluent",
+                  ),
                 }}
                 onMissing={() => setCompareMissing(true)}
               />
               <ul className="compare-notes">
-                <li>WinUI text box URL bar</li>
-                <li>Accent pill on the selected tab</li>
-                <li>Fluent icons</li>
-                <li>WinUI cards for Essentials</li>
+                <li>
+                  {t(
+                    "WinUI text box URL bar",
+                    "Barre d'adresse en zone de texte WinUI",
+                  )}
+                </li>
+                <li>
+                  {t(
+                    "Accent pill on the selected tab",
+                    "Pilule d'accent sur l'onglet sélectionné",
+                  )}
+                </li>
+                <li>{t("Fluent icons", "Icônes Fluent")}</li>
+                <li>
+                  {t(
+                    "WinUI cards for Essentials",
+                    "Essentials en cartes WinUI",
+                  )}
+                </li>
               </ul>
             </Reveal>
           </div>
@@ -275,96 +392,114 @@ export function Home() {
           <div className="section-head section-head--split">
             <h2 id="features-title">
               <SplitHeading
-                lead="Every part of Zen, redrawn."
-                rest="Down to the details."
+                lead={t(
+                  "Every part of Zen, redrawn.",
+                  "Chaque partie de Zen, redessinée.",
+                )}
+                rest={t("Down to the details.", "Jusque dans les détails.")}
               />
             </h2>
             <Link className="button" to="/docs/features">
-              All {totalWithEnhanced} features <ArrowRight16Regular />
+              {t(
+                `All ${totalWithEnhanced} features`,
+                `Les ${totalWithEnhanced} fonctions`,
+              )}{" "}
+              <ArrowRight16Regular />
             </Link>
           </div>
           <ul className="highlights">
-            {highlights.map((item, i) => (
-              <Reveal
-                as="li"
-                key={item.title}
-                className="highlight"
-                delay={(i % 3) * 60}>
-                <Link
-                  className="highlight__frame"
-                  to={`/docs/features/${item.group}`}
-                  aria-label={`${item.title}: learn more`}>
-                  <span
-                    className="highlight__shot"
-                    style={
-                      {
-                        "--focus": item.focus,
-                        "--zoom": item.zoom,
-                      } as React.CSSProperties
-                    }>
-                    {item.video ? (
-                      <FeatureVideo
-                        src={item.video}
-                        poster={`/shots/${item.image}.webp`}
-                        alt={item.alt}
-                      />
-                    ) : (
-                      <img
-                        src={`/shots/${item.image}.webp`}
-                        alt={item.alt}
-                        width={1280}
-                        height={800}
-                        loading="lazy"
-                      />
-                    )}
-                  </span>
-                </Link>
-                <div className="highlight__text">
-                  <h3>
-                    {item.title} <ModBadge mod={item.mod} />
-                  </h3>
-                  <p>{item.text}</p>
-                </div>
-              </Reveal>
-            ))}
+            {highlights.map((entry, i) => {
+              const item = localize(entry, lang);
+              return (
+                <Reveal
+                  as="li"
+                  key={entry.image}
+                  className="highlight"
+                  delay={(i % 3) * 60}>
+                  <Link
+                    className="highlight__frame"
+                    to={`/docs/features/${item.group}`}
+                    aria-label={t(
+                      `${item.title}: learn more`,
+                      `${item.title} : en savoir plus`,
+                    )}>
+                    <span
+                      className="highlight__shot"
+                      style={
+                        {
+                          "--focus": item.focus,
+                          "--zoom": item.zoom,
+                        } as React.CSSProperties
+                      }>
+                      {item.video ? (
+                        <FeatureVideo
+                          src={item.video}
+                          poster={`/shots/${item.image}.webp`}
+                          alt={item.alt}
+                        />
+                      ) : (
+                        <img
+                          src={`/shots/${item.image}.webp`}
+                          alt={item.alt}
+                          width={1280}
+                          height={800}
+                          loading="lazy"
+                        />
+                      )}
+                    </span>
+                  </Link>
+                  <div className="highlight__text">
+                    <h3>
+                      {item.title} <ModBadge mod={item.mod} />
+                    </h3>
+                    <p>{item.text}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
           </ul>
         </div>
       </section>
 
-      <section className="section" aria-label="The two mods">
+      <section
+        className="section"
+        aria-label={t("The two mods", "Les deux mods")}>
         <div className="container feature-rows">
-          {mods.map((item, i) => (
-            <Reveal
-              key={item.mod}
-              className={`feature-row-split${i % 2 ? " is-flipped" : ""}`}>
-              <div className="feature-row-split__text">
-                <ModBadge mod={item.mod} />
-                <h2>
-                  <SplitHeading lead={item.lead} rest={item.rest} />
-                </h2>
-                <p>{item.text}</p>
-                <ul className="capabilities">
-                  {item.points.map((point) => (
-                    <li key={point}>
-                      <Checkmark16Regular aria-hidden /> {point}
-                    </li>
-                  ))}
-                </ul>
-                <Link className="link-arrow" to={item.link}>
-                  {item.linkLabel} <ChevronRight16Regular />
-                </Link>
-              </div>
-              <figure className="product-crop">
-                <img
-                  src={`/shots/${item.image}.webp`}
-                  alt={item.alt}
-                  width={1280}
-                  height={800}
-                  loading="lazy"
-                />
-              </figure>
-            </Reveal>
-          ))}
+          {mods.map((entry, i) => {
+            const item = localize(entry, lang);
+            return (
+              <Reveal
+                key={entry.mod}
+                className={`feature-row-split${i % 2 ? " is-flipped" : ""}`}>
+                <div className="feature-row-split__text">
+                  <ModBadge mod={item.mod} />
+                  <h2>
+                    <SplitHeading lead={item.lead} rest={item.rest} />
+                  </h2>
+                  <p>{item.text}</p>
+                  <ul className="capabilities">
+                    {item.points.map((point) => (
+                      <li key={point}>
+                        <Checkmark16Regular aria-hidden /> {point}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link className="link-arrow" to={item.link}>
+                    {item.linkLabel} <ChevronRight16Regular />
+                  </Link>
+                </div>
+                <figure className="product-crop">
+                  <img
+                    src={`/shots/${item.image}.webp`}
+                    alt={item.alt}
+                    width={1280}
+                    height={800}
+                    loading="lazy"
+                  />
+                </figure>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
@@ -374,28 +509,57 @@ export function Home() {
             <div className="install-panel__cell install-panel__intro">
               <h2 id="install-title">
                 <SplitHeading
-                  lead="Install in two minutes."
-                  rest="On Windows, Linux and macOS."
+                  lead={t(
+                    "Install in two minutes.",
+                    "Installé en deux minutes.",
+                  )}
+                  rest={t(
+                    "On Windows, Linux and macOS.",
+                    "Sous Windows, Linux et macOS.",
+                  )}
                 />
               </h2>
               <ul className="install-panel__facts">
                 <li>
-                  <strong>Zen {ZEN_MIN_VERSION} or later</strong>
-                  Zen Browser or Zen Twilight.
+                  <strong>
+                    {t(
+                      `Zen ${ZEN_MIN_VERSION} or later`,
+                      `Zen ${ZEN_MIN_VERSION} ou plus récent`,
+                    )}
+                  </strong>
+                  {t(
+                    "Zen Browser or Zen Twilight.",
+                    "Zen Browser ou Zen Twilight.",
+                  )}
                 </li>
                 <li>
-                  <strong>Mica on Windows 11</strong>
-                  Comes from <a href={MICA_URL}>Mica For Everyone</a>, with a
-                  rule for Zen.
+                  <strong>
+                    {t("Mica on Windows 11", "Mica sous Windows 11")}
+                  </strong>
+                  {t(
+                    <>
+                      Comes from <a href={MICA_URL}>Mica For Everyone</a>, with
+                      a rule for Zen.
+                    </>,
+                    <>
+                      Vient de <a href={MICA_URL}>Mica For Everyone</a>, avec
+                      une règle pour Zen.
+                    </>,
+                  )}
                 </li>
                 <li>
-                  <strong>Blur on Linux and macOS</strong>
-                  From your compositor.
+                  <strong>
+                    {t("Blur on Linux and macOS", "Flou sous Linux et macOS")}
+                  </strong>
+                  {t("From your compositor.", "Celui de votre compositeur.")}
                 </li>
                 <li>
-                  <strong>Your other mods</strong>
+                  <strong>{t("Your other mods", "Vos autres mods")}</strong>
                   <Link to="/mods#compatible">
-                    {compatibleMods.length} popular mods checked
+                    {t(
+                      `${compatibleMods.length} popular mods checked`,
+                      `${compatibleMods.length} mods populaires vérifiés`,
+                    )}
                   </Link>
                   .
                 </li>
@@ -404,19 +568,45 @@ export function Home() {
 
             <div className="install-panel__cell">
               <InstallerDemo />
-              <h3>The installer</h3>
-              <p className="install-panel__kind">Recommended on Windows</p>
+              <h3>{t("The installer", "L'installateur")}</h3>
+              <p className="install-panel__kind">
+                {t("Recommended on Windows", "Recommandé sous Windows")}
+              </p>
               <ol className="install__steps">
-                <li>Close Zen and run ZenFluentSetup.exe.</li>
-                <li>Pick Zen Browser or Zen Twilight, then a profile.</li>
-                <li>Keep Zen Fluent Enhanced checked, or uncheck it.</li>
+                <li>
+                  {t(
+                    "Close Zen and run ZenFluentSetup.exe.",
+                    "Fermez Zen et lancez ZenFluentSetup.exe.",
+                  )}
+                </li>
+                <li>
+                  {t(
+                    "Pick Zen Browser or Zen Twilight, then a profile.",
+                    "Choisissez Zen Browser ou Zen Twilight, puis un profil.",
+                  )}
+                </li>
+                <li>
+                  {t(
+                    "Pick Zen Fluent or Zen Fluent Enhanced, then Install.",
+                    "Choisissez Zen Fluent ou Zen Fluent Enhanced, puis Installer.",
+                  )}
+                </li>
               </ol>
               <a className="button button--accent" href={INSTALLER_URL}>
-                <ArrowDownload20Regular /> Download ZenFluentSetup.exe
+                <ArrowDownload20Regular />{" "}
+                {t(
+                  "Download ZenFluentSetup.exe",
+                  "Télécharger ZenFluentSetup.exe",
+                )}
               </a>
               <p className="install__note">
-                Windows 10 and 11. It installs Sine too.{" "}
-                <a href={INSTALLER_DOCS_URL}>What it does</a>
+                {t(
+                  "Windows 10 and 11. It installs Sine too.",
+                  "Windows 10 et 11. Il installe aussi Sine.",
+                )}{" "}
+                <a href={INSTALLER_DOCS_URL}>
+                  {t("What it does", "Ce qu'il fait")}
+                </a>
               </p>
             </div>
 
@@ -424,31 +614,71 @@ export function Home() {
               <span className="icon-tile" aria-hidden>
                 <Code20Regular />
               </span>
-              <h3>By hand, with Sine</h3>
-              <p className="install-panel__kind">Any system</p>
+              <h3>{t("By hand, with Sine", "À la main, avec Sine")}</h3>
+              <p className="install-panel__kind">
+                {t("Any system", "Tout système")}
+              </p>
               <ol className="install__steps">
                 <li>
-                  Install <a href={ZEN_URL}>Zen Browser</a>, then{" "}
-                  <a href={SINE_URL}>Sine</a>.
+                  {t(
+                    <>
+                      Install <a href={ZEN_URL}>Zen Browser</a>, then{" "}
+                      <a href={SINE_URL}>Sine</a>.
+                    </>,
+                    <>
+                      Installez <a href={ZEN_URL}>Zen Browser</a>, puis{" "}
+                      <a href={SINE_URL}>Sine</a>.
+                    </>,
+                  )}
                 </li>
                 <li>
-                  Zen settings › Sine Mods › install from GitHub:
-                  <CopyField value={REPO} label="the Zen Fluent address" />
+                  {t(
+                    "Zen settings › Sine Mods › install from GitHub:",
+                    "Paramètres de Zen › Sine Mods › installer depuis GitHub :",
+                  )}
+                  <CopyField
+                    value={REPO}
+                    label={t(
+                      "the Zen Fluent address",
+                      "l'adresse de Zen Fluent",
+                    )}
+                  />
                 </li>
                 <li>
-                  Gear on Zen Fluent's card ›{" "}
-                  <strong>Allow the mod's icons</strong>.
+                  {t(
+                    <>
+                      Gear on Zen Fluent's card ›{" "}
+                      <strong>Allow the mod's icons</strong>.
+                    </>,
+                    <>
+                      Engrenage de la carte de Zen Fluent ›{" "}
+                      <strong>Allow the mod's icons</strong>.
+                    </>,
+                  )}
                 </li>
               </ol>
               <details className="install__more">
-                <summary>Add Zen Fluent Enhanced</summary>
+                <summary>
+                  {t("Add Zen Fluent Enhanced", "Ajouter Zen Fluent Enhanced")}
+                </summary>
                 <p>
-                  Check <strong>JS from unofficial sources</strong> in Sine's
-                  settings, then install:
+                  {t(
+                    <>
+                      Check <strong>JS from unofficial sources</strong> in
+                      Sine's settings, then install:
+                    </>,
+                    <>
+                      Cochez <strong>JS from unofficial sources</strong> dans
+                      les réglages de Sine, puis installez :
+                    </>,
+                  )}
                 </p>
                 <CopyField
                   value={ENHANCED_URL}
-                  label="the Zen Fluent Enhanced address"
+                  label={t(
+                    "the Zen Fluent Enhanced address",
+                    "l'adresse de Zen Fluent Enhanced",
+                  )}
                 />
               </details>
             </div>
@@ -461,12 +691,15 @@ export function Home() {
           <div className="section-head section-head--split">
             <h2 id="latest-title">
               <SplitHeading
-                lead="The latest."
-                rest="One version for both mods."
+                lead={t("The latest.", "Les dernières versions.")}
+                rest={t(
+                  "One version for both mods.",
+                  "Une version pour les deux mods.",
+                )}
               />
             </h2>
             <Link className="button" to="/changelog">
-              Changelog <ArrowRight16Regular />
+              {t("Changelog", "Nouveautés")} <ArrowRight16Regular />
             </Link>
           </div>
           <ul className="releases-row">
@@ -485,7 +718,7 @@ export function Home() {
                         (a, b) =>
                           kindOrder.indexOf(a.kind) - kindOrder.indexOf(b.kind),
                       )
-                      .map((s) => `${s.count} ${s.kind.toLowerCase()}`)
+                      .map((s) => kindLabel(s.kind, s.count, lang))
                       .join(" · ")}
                   </p>
                 </Link>
@@ -499,16 +732,20 @@ export function Home() {
         <div className="aurora aurora--closing" aria-hidden />
         <div className="container closing__inner">
           <h2 id="closing-title">
-            <SplitHeading lead="The Windows 11 look" rest="for Zen Browser" />
+            <SplitHeading
+              lead={t("The Windows 11 look", "Le style de Windows 11")}
+              rest={t("for Zen Browser", "pour Zen Browser")}
+            />
           </h2>
           <div className="hero__actions">
             <a
               className="button button--accent button--large"
               href={INSTALLER_URL}>
-              <ArrowDownload20Regular /> Download for Windows
+              <ArrowDownload20Regular />{" "}
+              {t("Download for Windows", "Télécharger pour Windows")}
             </a>
             <Link className="button button--large" to="/docs">
-              Read the docs
+              {t("Read the docs", "Lire la documentation")}
             </Link>
           </div>
         </div>

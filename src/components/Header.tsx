@@ -2,34 +2,32 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   Checkmark16Regular,
-  Color20Regular,
   Dismiss20Regular,
+  LocalLanguage20Regular,
   Navigation20Regular,
   WeatherMoon20Regular,
   WeatherSunny20Regular,
 } from "@fluentui/react-icons";
-import { accents, useTheme } from "../theme";
+import { useTheme } from "../theme";
+import { languages, useLang } from "../i18n";
 import { originOf } from "../motion";
 import { GitHubIcon, Logo } from "./Icons";
 import { REPO_URL } from "../data/site";
 
-const links = [
-  { to: "/", label: "Overview", end: true },
-  { to: "/mods", label: "Features & mods" },
-  { to: "/docs", label: "Docs" },
-  { to: "/changelog", label: "Changelog" },
-];
-
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
-  const next = theme === "dark" ? "light" : "dark";
+  const { t } = useLang();
+  const label =
+    theme === "dark"
+      ? t("Switch to light theme", "Passer au thème clair")
+      : t("Switch to dark theme", "Passer au thème sombre");
   return (
     <button
       type="button"
       className="icon-button theme-toggle"
       onClick={(e) => toggle(originOf(e))}
-      aria-label={`Switch to ${next} theme`}
-      title={`Switch to ${next} theme`}
+      aria-label={label}
+      title={label}
       data-theme-current={theme}>
       <WeatherSunny20Regular className="theme-toggle__sun" aria-hidden />
       <WeatherMoon20Regular className="theme-toggle__moon" aria-hidden />
@@ -37,10 +35,10 @@ function ThemeToggle() {
   );
 }
 
-/** The site's accent, from Windows' palette: the new color grows from the
- * swatch clicked, as in Zen Fluent's welcome tour. */
-function AccentPicker() {
-  const { accent, setAccent } = useTheme();
+/** English or French: a WinUI menu flyout; the new language grows from
+ * the item clicked, as the theme does. */
+function LangPicker() {
+  const { lang, setLang, t } = useLang();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -63,40 +61,42 @@ function AccentPicker() {
     };
   }, [open]);
 
+  const label = t("Language", "Langue");
   return (
-    <div className="accent-picker" ref={rootRef}>
+    <div className="lang-picker" ref={rootRef}>
       <button
         type="button"
-        className="icon-button"
-        aria-label="Accent color"
-        title="Accent color"
+        className="icon-button lang-picker__button"
+        aria-label={label}
+        title={label}
         aria-expanded={open}
-        aria-controls="accent-flyout"
+        aria-controls="lang-flyout"
         onClick={() => setOpen((v) => !v)}>
-        <Color20Regular aria-hidden />
+        <LocalLanguage20Regular aria-hidden />
+        <span aria-hidden>{lang.toUpperCase()}</span>
       </button>
       {open && (
         <div
-          className="accent-flyout"
-          id="accent-flyout"
-          role="group"
-          aria-label="Accent color">
-          <p className="accent-flyout__title">Accent color</p>
-          <div className="accent-flyout__swatches">
-            {accents.map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                className="accent-swatch"
-                style={{ "--swatch": a.color } as React.CSSProperties}
-                aria-label={a.label}
-                title={a.label}
-                aria-pressed={accent === a.id}
-                onClick={(e) => setAccent(a.id, originOf(e))}>
-                {accent === a.id && <Checkmark16Regular aria-hidden />}
-              </button>
-            ))}
-          </div>
+          className="lang-flyout"
+          id="lang-flyout"
+          role="menu"
+          aria-label={label}>
+          {languages.map((l) => (
+            <button
+              key={l.id}
+              type="button"
+              role="menuitemradio"
+              aria-checked={lang === l.id}
+              lang={l.id}
+              className="lang-flyout__item"
+              onClick={(e) => {
+                setOpen(false);
+                if (l.id !== lang) setLang(l.id, originOf(e));
+              }}>
+              {l.label}
+              {lang === l.id && <Checkmark16Regular aria-hidden />}
+            </button>
+          ))}
         </div>
       )}
     </div>
@@ -107,6 +107,14 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { t } = useLang();
+
+  const links = [
+    { to: "/", label: t("Overview", "Présentation"), end: true },
+    { to: "/mods", label: t("Features & mods", "Fonctions et mods") },
+    { to: "/docs", label: t("Docs", "Documentation") },
+    { to: "/changelog", label: t("Changelog", "Nouveautés") },
+  ];
 
   useEffect(() => setOpen(false), [location.pathname]);
 
@@ -128,12 +136,18 @@ export function Header() {
     <header
       className={`site-header${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}`}>
       <div className="container site-header__inner">
-        <NavLink to="/" className="brand" aria-label="Zen Fluent, home">
+        <NavLink
+          to="/"
+          className="brand"
+          aria-label={t("Zen Fluent, home", "Zen Fluent, accueil")}>
           <Logo size={26} />
           <span>Zen Fluent</span>
         </NavLink>
 
-        <nav className="site-nav" id="site-nav" aria-label="Main">
+        <nav
+          className="site-nav"
+          id="site-nav"
+          aria-label={t("Main", "Principale")}>
           {links.map((link) => (
             <NavLink
               key={link.to}
@@ -146,7 +160,7 @@ export function Header() {
         </nav>
 
         <div className="site-header__actions">
-          <AccentPicker />
+          <LangPicker />
           <ThemeToggle />
           <a
             className="button button--subtle github-link"
@@ -159,14 +173,18 @@ export function Header() {
           <Link
             className="button button--accent header-install"
             to={{ pathname: "/", hash: "#install" }}>
-            Install
+            {t("Install", "Installer")}
           </Link>
           <button
             type="button"
             className="icon-button menu-toggle"
             aria-expanded={open}
             aria-controls="site-nav"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={
+              open
+                ? t("Close menu", "Fermer le menu")
+                : t("Open menu", "Ouvrir le menu")
+            }
             onClick={() => setOpen((v) => !v)}>
             {open ? <Dismiss20Regular /> : <Navigation20Regular />}
           </button>

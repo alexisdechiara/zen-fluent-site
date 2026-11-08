@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import tags from "../data/tags.json";
 import { ChevronDown16Regular, Open16Regular } from "@fluentui/react-icons";
-import { formatDate, releases } from "../data/changelog";
+import { releases } from "../data/changelog";
+import { kindLabel, kindTitle, useLang } from "../i18n";
 import { REPO_URL } from "../data/site";
 
 const kindClass = (kind: string) => `kind kind--${kind.toLowerCase()}`;
 
 export function Changelog() {
+  const { lang, t, date: formatDate } = useLang();
   const [current, setCurrent] = useState<string | undefined>(
     releases[0]?.version,
   );
@@ -54,19 +56,23 @@ export function Changelog() {
     <>
       <section className="page-hero">
         <div className="container">
-          <h1 className="rise">What's new</h1>
+          <h1 className="rise">{t("What's new", "Nouveautés")}</h1>
           <p
             className="page-hero__lead rise"
             style={{ animationDelay: "120ms" }}>
-            Every release of Zen Fluent and Zen Fluent Enhanced: both mods share
-            one version. Sine offers each update on its own.
+            {t(
+              "Every release of Zen Fluent and Zen Fluent Enhanced: both mods share one version. Sine offers each update on its own.",
+              "Chaque version de Zen Fluent et de Zen Fluent Enhanced : les deux mods partagent une version. Sine propose chaque mise à jour de lui-même. Le détail des changements est en anglais.",
+            )}
           </p>
         </div>
       </section>
 
       <section className="section section--tight">
         <div className="container changelog">
-          <aside className="changelog__nav" aria-label="Releases">
+          <aside
+            className="changelog__nav"
+            aria-label={t("Releases", "Versions")}>
             <ul>
               {releases.map((r) => (
                 <li key={r.version}>
@@ -101,7 +107,9 @@ export function Changelog() {
                   <header className="release__head">
                     <h2>Version {release.version}</h2>
                     {i === 0 && (
-                      <span className="badge badge--accent">Latest</span>
+                      <span className="badge badge--accent">
+                        {t("Latest", "Dernière")}
+                      </span>
                     )}
                     <time dateTime={release.date}>
                       {formatDate(release.date)}
@@ -112,14 +120,14 @@ export function Changelog() {
                         href={`${REPO_URL}/tree/v${release.version}`}
                         target="_blank"
                         rel="noreferrer">
-                        Source <Open16Regular />
+                        {t("Source", "Source")} <Open16Regular />
                       </a>
                     )}
                   </header>
                   <div className="release__summary">
                     {release.sections.map((s) => (
                       <span key={s.kind} className={kindClass(s.kind)}>
-                        {s.count} {s.kind.toLowerCase()}
+                        {kindLabel(s.kind, s.count, lang)}
                       </span>
                     ))}
                   </div>
@@ -129,10 +137,11 @@ export function Changelog() {
                     {release.sections.map((section) => (
                       <section key={section.kind} className="release__section">
                         <h3 className={kindClass(section.kind)}>
-                          {section.kind}
+                          {kindTitle(section.kind, lang)}
                         </h3>
                         <div
                           className="prose"
+                          lang="en"
                           dangerouslySetInnerHTML={{ __html: section.html }}
                         />
                       </section>
@@ -147,8 +156,11 @@ export function Changelog() {
                       expand(release.version, !expanded.has(release.version))
                     }>
                     {expanded.has(release.version)
-                      ? "Show less"
-                      : `Show all ${release.sections.reduce((n, s) => n + s.count, 0)} changes`}
+                      ? t("Show less", "Voir moins")
+                      : t(
+                          `Show all ${release.sections.reduce((n, s) => n + s.count, 0)} changes`,
+                          `Voir les ${release.sections.reduce((n, s) => n + s.count, 0)} changements`,
+                        )}
                     <ChevronDown16Regular />
                   </button>
                 </div>

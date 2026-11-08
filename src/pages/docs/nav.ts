@@ -30,6 +30,7 @@ export const groupIcons: Record<string, FluentIcon> = {
 export interface DocPage {
   to: string;
   title: string;
+  fr: { title: string };
   icon: FluentIcon;
   /** The file to edit for this page, in the site's repository. */
   source: string;
@@ -40,24 +41,28 @@ export const docPages: DocPage[] = [
   {
     to: "/docs",
     title: "Overview",
+    fr: { title: "Présentation" },
     icon: Home20Regular,
     source: "src/pages/docs/Overview.tsx",
   },
   {
     to: "/docs/install",
     title: "Install",
+    fr: { title: "Installation" },
     icon: ArrowDownload20Regular,
     source: "src/pages/docs/Install.tsx",
   },
   {
     to: "/docs/features",
     title: "All features",
+    fr: { title: "Toutes les fonctions" },
     icon: Apps20Regular,
     source: "src/data/features.ts",
   },
   ...featureGroups.map((group) => ({
     to: `/docs/features/${group.id}`,
     title: group.title,
+    fr: { title: group.fr.title },
     icon: groupIcons[group.id],
     source: "src/data/features.ts",
   })),

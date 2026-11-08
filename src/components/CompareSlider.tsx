@@ -3,6 +3,7 @@ import {
   ChevronLeft16Filled,
   ChevronRight16Filled,
 } from "@fluentui/react-icons";
+import { useLang } from "../i18n";
 import { reducedMotion } from "../motion";
 
 interface Props {
@@ -29,6 +30,7 @@ export function CompareSlider({
   start = 50,
 }: Props) {
   const [position, setPosition] = useState(start);
+  const { t } = useLang();
   const [dragging, setDragging] = useState(false);
   const [touched, setTouched] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -151,7 +153,10 @@ export function CompareSlider({
         max={100}
         step={0.5}
         value={position}
-        aria-label={`Comparison: ${before.label} on the left, ${after.label} on the right`}
+        aria-label={t(
+          `Comparison: ${before.label} on the left, ${after.label} on the right`,
+          `Comparaison : ${before.label} à gauche, ${after.label} à droite`,
+        )}
         aria-valuetext={`${Math.round(position)}% ${before.label}`}
         onChange={(e) => {
           setTouched(true);

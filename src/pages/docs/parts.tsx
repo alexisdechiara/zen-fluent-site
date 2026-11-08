@@ -9,6 +9,7 @@ import {
   Link16Regular,
 } from "@fluentui/react-icons";
 import { VERSION } from "../../data/site";
+import { localize, useLang } from "../../i18n";
 import { docPages, SITE_REPO_URL } from "./nav";
 
 export function Breadcrumb({
@@ -16,8 +17,9 @@ export function Breadcrumb({
 }: {
   items: { label: string; to?: string }[];
 }) {
+  const { t } = useLang();
   return (
-    <nav className="breadcrumb" aria-label="Breadcrumb">
+    <nav className="breadcrumb" aria-label={t("Breadcrumb", "Fil d'Ariane")}>
       {items.map((item, i) => (
         <span key={item.label} className="breadcrumb__item">
           {i > 0 && <ChevronRight12Regular aria-hidden />}
@@ -35,12 +37,17 @@ export function Breadcrumb({
 /** Copies the page's address (with its anchor), as WinUI Gallery's link key. */
 export function CopyLinkButton() {
   const [copied, setCopied] = useState(false);
+  const { t } = useLang();
   return (
     <button
       type="button"
       className="button docs-tool"
-      aria-label={copied ? "Link copied" : "Copy a link to this page"}
-      title={copied ? "Copied" : "Copy link"}
+      aria-label={
+        copied
+          ? t("Link copied", "Lien copié")
+          : t("Copy a link to this page", "Copier un lien vers cette page")
+      }
+      title={copied ? t("Copied", "Copié") : t("Copy link", "Copier le lien")}
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(window.location.href);
@@ -84,6 +91,7 @@ export function DocsHeader({
 export function Toc({ items }: { items: { id: string; label: string }[] }) {
   const [active, setActive] = useState(items[0]?.id);
   const ids = items.map((i) => i.id).join(" ");
+  const { t } = useLang();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -104,8 +112,8 @@ export function Toc({ items }: { items: { id: string; label: string }[] }) {
 
   if (items.length === 0) return <div className="toc" />;
   return (
-    <nav className="toc" aria-label="On this page">
-      <p className="toc__title">On this page</p>
+    <nav className="toc" aria-label={t("On this page", "Sur cette page")}>
+      <p className="toc__title">{t("On this page", "Sur cette page")}</p>
       <ul>
         {items.map((item) => (
           <li key={item.id}>
@@ -124,25 +132,27 @@ export function Toc({ items }: { items: { id: string; label: string }[] }) {
 
 /** Edit link, version, and the previous and next pages. */
 export function DocsPager({ current }: { current: string }) {
+  const { lang, t } = useLang();
   const index = docPages.findIndex((p) => p.to === current);
   const page = docPages[index];
-  const prev = docPages[index - 1];
-  const next = docPages[index + 1];
+  const prev = docPages[index - 1] && localize(docPages[index - 1], lang);
+  const next = docPages[index + 1] && localize(docPages[index + 1], lang);
   return (
     <footer className="docs-footer">
       <div className="docs-footer__meta">
         {page && (
           <a href={`${SITE_REPO_URL}/blob/main/${page.source}`}>
-            <Edit16Regular aria-hidden /> Edit this page on GitHub
+            <Edit16Regular aria-hidden />{" "}
+            {t("Edit this page on GitHub", "Modifier cette page sur GitHub")}
           </a>
         )}
         <span>Zen Fluent {VERSION}</span>
       </div>
-      <nav className="pager" aria-label="Pages">
+      <nav className="pager" aria-label={t("Pages", "Pages")}>
         {prev ? (
           <Link className="pager__link" to={prev.to}>
             <small>
-              <ChevronLeft16Regular aria-hidden /> Previous
+              <ChevronLeft16Regular aria-hidden /> {t("Previous", "Précédent")}
             </small>
             {prev.title}
           </Link>
@@ -152,7 +162,7 @@ export function DocsPager({ current }: { current: string }) {
         {next && (
           <Link className="pager__link pager__link--next" to={next.to}>
             <small>
-              Next <ChevronRight16Regular aria-hidden />
+              {t("Next", "Suivant")} <ChevronRight16Regular aria-hidden />
             </small>
             {next.title}
           </Link>

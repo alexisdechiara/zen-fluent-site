@@ -3618,77 +3618,7 @@ kbd {
 
 /* ---------- Motion: WinUI's timings (167 / 250 / 333 ms), decelerating ---------- */
 
-/* Accents from Windows' palette (Header's picker, theme.tsx). Blue is the
-   default above; hover, press and the soft wash come from the base. */
-:root[data-accent] {
-  --accent-hover: color-mix(in srgb, var(--accent) 90%, var(--bg));
-  --accent-press: color-mix(in srgb, var(--accent) 80%, var(--bg));
-  --accent-soft: color-mix(in srgb, var(--accent) 9%, transparent);
-}
-
-:root[data-accent="blue"] {
-  --accent-hover: #196ebf;
-  --accent-press: #3183ca;
-  --accent-soft: rgba(0, 95, 184, 0.08);
-}
-
-:root[data-theme="dark"][data-accent="blue"] {
-  --accent-hover: #5bbbe8;
-  --accent-press: #56a9d1;
-  --accent-soft: rgba(96, 205, 255, 0.1);
-}
-
-:root[data-accent="violet"] {
-  --accent: #744da9;
-  --accent-text: #5a2e94;
-}
-
-:root[data-theme="dark"][data-accent="violet"] {
-  --accent: #c2a9ec;
-  --accent-text: #e1d2fa;
-}
-
-:root[data-accent="mint"] {
-  --accent: #007a6c;
-  --accent-text: #005a4f;
-}
-
-:root[data-theme="dark"][data-accent="mint"] {
-  --accent: #4fe0c0;
-  --accent-text: #9ff5df;
-}
-
-:root[data-accent="orange"] {
-  --accent: #b3460e;
-  --accent-text: #8a3200;
-}
-
-:root[data-theme="dark"][data-accent="orange"] {
-  --accent: #ffa064;
-  --accent-text: #ffcfac;
-}
-
-:root[data-accent="pink"] {
-  --accent: #bf0077;
-  --accent-text: #96005c;
-}
-
-:root[data-theme="dark"][data-accent="pink"] {
-  --accent: #ff7ac9;
-  --accent-text: #ffbde2;
-}
-
-:root[data-accent="graphite"] {
-  --accent: #515c6b;
-  --accent-text: #3b4450;
-}
-
-:root[data-theme="dark"][data-accent="graphite"] {
-  --accent: #a9b5c4;
-  --accent-text: #d3dbe5;
-}
-
-/* A theme or an accent: the new look grows as a circle from the button
+/* A theme or a language: the new look grows as a circle from the button
    (motion.ts). Nothing else transitions meanwhile. */
 .is-vt,
 .is-vt *,
@@ -3715,66 +3645,62 @@ kbd {
   }
 }
 
-/* The accent picker: a WinUI flyout of swatches under its button */
-.accent-picker {
+/* The language picker: a WinUI menu flyout under its button */
+.lang-picker {
   position: relative;
 }
 
-.accent-flyout {
+.lang-picker__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  padding: 0 10px;
+  font: 600 12px var(--font);
+  letter-spacing: 0.04em;
+}
+
+.lang-flyout {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
   z-index: 60;
-  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  padding: 4px;
   border: 1px solid var(--stroke-strong);
   border-radius: var(--radius);
   background: var(--surface-strong);
   box-shadow: var(--shadow-flyout);
 }
 
-.accent-flyout__title {
-  margin: 0 0 10px;
-  color: var(--text-2);
-  font-size: 12px;
-}
-
-.accent-flyout__swatches {
-  display: grid;
-  grid-template-columns: repeat(3, 32px);
-  gap: 8px;
-}
-
-.accent-swatch {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
+.lang-flyout__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  padding: 0 10px;
   border: 0;
-  border-radius: 50%;
-  background: var(--swatch);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
-  color: #fff;
+  border-radius: var(--radius-s);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: start;
   cursor: pointer;
-  transition: scale 0.167s var(--ease-out);
 }
 
-.accent-swatch:hover {
-  scale: 1.08;
+.lang-flyout__item:hover {
+  background: var(--subtle-hover);
 }
 
-.accent-swatch[aria-pressed="true"] {
-  outline: 2px solid var(--text);
-  outline-offset: 2px;
-}
-
-.accent-swatch:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 2px;
+.lang-flyout__item svg {
+  margin-inline-start: auto;
+  color: var(--accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .accent-flyout {
+  .lang-flyout {
     animation: flyout 0.25s var(--ease) both;
   }
 }

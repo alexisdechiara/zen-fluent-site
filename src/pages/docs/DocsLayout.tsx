@@ -16,6 +16,7 @@ import {
   totalWithEnhanced,
 } from "../../data/features";
 import { DOCS_URL, REPO_URL } from "../../data/site";
+import { localize, useLang } from "../../i18n";
 import { docPages } from "./nav";
 
 /** The docs: a NavigationView pane on the left, the page beside it. */
@@ -25,6 +26,7 @@ export function DocsLayout() {
   const [featuresOpen, setFeaturesOpen] = useState(true);
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
+  const { lang, t } = useLang();
 
   useEffect(() => {
     setOpen(false);
@@ -47,11 +49,15 @@ export function DocsLayout() {
   const q = query.trim().toLowerCase();
   const results = q
     ? allFeatures.filter((f) =>
-        `${f.name} ${f.text} ${f.pref ?? ""}`.toLowerCase().includes(q),
+        `${f.name} ${f.text} ${f.fr.name} ${f.fr.text} ${f.pref ?? ""}`
+          .toLowerCase()
+          .includes(q),
       )
     : [];
-  const current =
-    docPages.find((p) => p.to === location.pathname) ?? docPages[0];
+  const current = localize(
+    docPages.find((p) => p.to === location.pathname) ?? docPages[0],
+    lang,
+  );
 
   return (
     <div className="container docs-shell">
@@ -62,7 +68,7 @@ export function DocsLayout() {
         aria-controls="docs-pane"
         onClick={() => setOpen((v) => !v)}>
         {open ? <Dismiss16Regular /> : <Navigation20Regular />}
-        <span>{open ? "Close" : current.title}</span>
+        <span>{open ? t("Close", "Fermer") : current.title}</span>
       </button>
 
       <aside
@@ -71,11 +77,16 @@ export function DocsLayout() {
         aria-label="Documentation">
         <label className="search-box docs-search">
           <Search20Regular aria-hidden />
-          <span className="visually-hidden">Search the docs</span>
+          <span className="visually-hidden">
+            {t("Search the docs", "Rechercher dans la documentation")}
+          </span>
           <input
             ref={searchRef}
             type="search"
-            placeholder="Search the docs"
+            placeholder={t(
+              "Search the docs",
+              "Rechercher dans la documentation",
+            )}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Escape" && setQuery("")}
@@ -86,25 +97,35 @@ export function DocsLayout() {
         {q ? (
           <div className="docs-results" aria-live="polite">
             <p className="docs-pane__heading">
-              {results.length} {results.length === 1 ? "result" : "results"}
+              {results.length}{" "}
+              {results.length === 1
+                ? t("result", "résultat")
+                : t("results", "résultats")}
             </p>
             {results.length === 0 ? (
               <p className="docs-results__empty">
-                No feature matches “{query}”.
+                {t(
+                  `No feature matches “${query}”.`,
+                  `Aucune fonction ne correspond à « ${query} ».`,
+                )}
               </p>
             ) : (
               <ul>
-                {results.map((f) => (
-                  <li key={f.name}>
-                    <Link
-                      to={`/docs/features/${groupOf(f).id}#${featureId(f.name)}`}>
-                      <span className="docs-results__name">
-                        {f.name} <ModBadge mod={f.mod} />
-                      </span>
-                      <small>{groupOf(f).title}</small>
-                    </Link>
-                  </li>
-                ))}
+                {results.map((feature) => {
+                  const f = localize(feature, lang);
+                  const group = localize(groupOf(feature), lang);
+                  return (
+                    <li key={f.name}>
+                      <Link
+                        to={`/docs/features/${group.id}#${featureId(feature.name)}`}>
+                        <span className="docs-results__name">
+                          {f.name} <ModBadge mod={f.mod} />
+                        </span>
+                        <small>{group.title}</small>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>
@@ -117,7 +138,9 @@ export function DocsLayout() {
                 end
                 className="docs-nav__item">
                 <page.icon aria-hidden />
-                <span className="docs-nav__label">{page.title}</span>
+                <span className="docs-nav__label">
+                  {localize(page, lang).title}
+                </span>
               </NavLink>
             ))}
 
@@ -126,7 +149,7 @@ export function DocsLayout() {
               className="docs-nav__group"
               aria-expanded={featuresOpen}
               onClick={() => setFeaturesOpen((v) => !v)}>
-              Features
+              {t("Features", "Fonctions")}
               <ChevronDown16Regular aria-hidden />
             </button>
             {featuresOpen && (
@@ -138,7 +161,9 @@ export function DocsLayout() {
                     end
                     className="docs-nav__item">
                     <page.icon aria-hidden />
-                    <span className="docs-nav__label">{page.title}</span>
+                    <span className="docs-nav__label">
+                      {localize(page, lang).title}
+                    </span>
                     <span className="docs-nav__count">
                       {page.to === "/docs/features"
                         ? totalWithEnhanced
@@ -150,21 +175,21 @@ export function DocsLayout() {
               </div>
             )}
 
-            <p className="docs-pane__heading">Reference</p>
+            <p className="docs-pane__heading">{t("Reference", "Référence")}</p>
             <a
               className="docs-nav__item"
               href={`${DOCS_URL}/settings/README.md`}>
-              Every setting{" "}
+              {t("Every setting", "Tous les réglages")}{" "}
               <Open16Regular className="docs-nav__external" aria-hidden />
             </a>
             <Link className="docs-nav__item" to="/mods#compatible">
-              Compatible mods
+              {t("Compatible mods", "Mods compatibles")}
             </Link>
             <Link className="docs-nav__item" to="/changelog">
-              Changelog
+              {t("Changelog", "Nouveautés")}
             </Link>
             <a className="docs-nav__item" href={REPO_URL}>
-              Source code{" "}
+              {t("Source code", "Code source")}{" "}
               <Open16Regular className="docs-nav__external" aria-hidden />
             </a>
           </nav>

@@ -5,16 +5,23 @@ import { FeatureVideo } from "../../components/FeatureVideo";
 import { ModBadge } from "../../components/ModBadge";
 import { featureGroups, featureId, type Feature } from "../../data/features";
 import { DOCS_URL } from "../../data/site";
+import { localize, useLang } from "../../i18n";
 import { groupIcons } from "./nav";
 import { Breadcrumb, DocsHeader, DocsPage, DocsPager } from "./parts";
 
 /** One feature, as a WinUI Gallery sample: the card, then its preference. */
-function Sample({ feature }: { feature: Feature }) {
+function Sample({ feature: item }: { feature: Feature }) {
+  const { lang, t } = useLang();
+  const feature = localize(item, lang);
   return (
-    <section id={featureId(feature.name)} className="sample">
+    <section id={featureId(item.name)} className="sample">
       <h2 className="sample__title">
         {feature.name}
-        {feature.next && <span className="next-badge">Next release</span>}
+        {feature.next && (
+          <span className="next-badge">
+            {t("Next release", "Prochaine version")}
+          </span>
+        )}
       </h2>
       <div className="sample__card">
         <div className="sample__stage">
@@ -29,25 +36,25 @@ function Sample({ feature }: { feature: Feature }) {
           <p>{feature.text}</p>
           <dl className="sample__meta">
             <div>
-              <dt>Mod</dt>
+              <dt>{t("Mod", "Mod")}</dt>
               <dd>
                 <ModBadge mod={feature.mod} />
               </dd>
             </div>
             {feature.mod === "enhanced" && (
               <div>
-                <dt>Default</dt>
+                <dt>{t("Default", "Par défaut")}</dt>
                 <dd>
                   <span className={`default${feature.on ? " is-on" : ""}`}>
                     <span className="default__dot" aria-hidden />
-                    {feature.on ? "On" : "Off"}
+                    {feature.on ? t("On", "Activée") : t("Off", "Désactivée")}
                   </span>
                 </dd>
               </div>
             )}
             {feature.keys && (
               <div>
-                <dt>Shortcut</dt>
+                <dt>{t("Shortcut", "Raccourci")}</dt>
                 <dd>
                   <kbd>{feature.keys}</kbd>
                 </dd>
@@ -57,25 +64,41 @@ function Sample({ feature }: { feature: Feature }) {
         </div>
         <details className="sample__source">
           <summary>
-            {feature.pref ? "Preference" : "Where to change it"}
+            {feature.pref
+              ? t("Preference", "Préférence")
+              : t("Where to change it", "Où le changer")}
             <ChevronDown16Regular aria-hidden />
           </summary>
           <div className="sample__source-body">
             {feature.pref ? (
               <>
                 <p>
-                  In Zen Fluent's settings, or in <code>about:config</code>:
+                  {t(
+                    <>
+                      In Zen Fluent's settings, or in <code>about:config</code>:
+                    </>,
+                    <>
+                      Dans les réglages de Zen Fluent, ou dans{" "}
+                      <code>about:config</code> :
+                    </>,
+                  )}
                 </p>
-                <CopyField value={feature.pref} label="the preference" />
+                <CopyField
+                  value={feature.pref}
+                  label={t("the preference", "la préférence")}
+                />
               </>
             ) : (
               <p>
-                In Zen Fluent's settings: the gear on its card in Sine, or the
-                settings page of Zen Fluent Enhanced.
+                {t(
+                  "In Zen Fluent's settings: the gear on its card in Sine, or the settings page of Zen Fluent Enhanced.",
+                  "Dans les réglages de Zen Fluent : l'engrenage de sa carte dans Sine, ou la page de paramètres de Zen Fluent Enhanced.",
+                )}
               </p>
             )}
             <a href={`${DOCS_URL}/${feature.doc}`}>
-              Every detail on GitHub <Open16Regular aria-hidden />
+              {t("Every detail on GitHub", "Tous les détails sur GitHub")}{" "}
+              <Open16Regular aria-hidden />
             </a>
           </div>
         </details>
@@ -86,8 +109,10 @@ function Sample({ feature }: { feature: Feature }) {
 
 export function FeatureGroup() {
   const { group: id } = useParams();
-  const group = featureGroups.find((g) => g.id === id);
-  if (!group) return <Navigate to="/docs/features" replace />;
+  const { lang, t } = useLang();
+  const found = featureGroups.find((g) => g.id === id);
+  if (!found) return <Navigate to="/docs/features" replace />;
+  const group = localize(found, lang);
 
   const Icon = groupIcons[group.id];
   const core = group.features.filter((f) => f.mod === "core").length;
@@ -98,12 +123,12 @@ export function FeatureGroup() {
     <DocsPage
       toc={group.features.map((f) => ({
         id: featureId(f.name),
-        label: f.name,
+        label: localize(f, lang).name,
       }))}>
       <Breadcrumb
         items={[
-          { label: "Docs", to: "/docs" },
-          { label: "Features", to: "/docs/features" },
+          { label: t("Docs", "Documentation"), to: "/docs" },
+          { label: t("Features", "Fonctions"), to: "/docs/features" },
           { label: group.title },
         ]}
       />
@@ -117,10 +142,14 @@ export function FeatureGroup() {
         }
       />
       <p className="docs-lead">
-        {group.intro} {group.features.length} features:{" "}
-        {[core && `${core} in Zen Fluent`, extras && `${extras} in Enhanced`]
+        {group.intro} {group.features.length} {t("features", "fonctions")}
+        {t(":", " :")}{" "}
+        {[
+          core && t(`${core} in Zen Fluent`, `${core} dans Zen Fluent`),
+          extras && t(`${extras} in Enhanced`, `${extras} dans Enhanced`),
+        ]
           .filter(Boolean)
-          .join(", ")}
+          .join(t(", ", ", "))}
         .
       </p>
 
