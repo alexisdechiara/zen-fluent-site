@@ -10,6 +10,7 @@ import {
 import { BrowserHotspots } from "../components/BrowserHotspots";
 import { CompareSlider } from "../components/CompareSlider";
 import { CopyField } from "../components/CopyField";
+import { FeatureDemo, type DemoScene } from "../components/FeatureDemo";
 import { FeatureVideo } from "../components/FeatureVideo";
 import { InstallerDemo } from "../components/InstallerDemo";
 import { kindLabel, localize, useLang } from "../i18n";
@@ -63,12 +64,15 @@ const highlights: {
   group: string;
   /** A clip recorded in Zen (public/clips), shown instead of the still. */
   video?: string;
+  /** A scripted demo built in code (FeatureDemo), shown instead of both. */
+  demo?: DemoScene;
   fr: { title: string; text: string; alt: string };
 }[] = [
   {
     title: "Mica, Mica Alt or Acrylic",
     text: "The Windows 11 material behind the whole window, tinted with your space's color.",
     image: "dark-mica-alt",
+    demo: "materials",
     focus: "0% 0%",
     zoom: 3.4,
     alt: "Zen Fluent with the Mica Alt material in dark mode",
@@ -84,6 +88,7 @@ const highlights: {
     title: "Or the Microsoft Edge look",
     text: "A second complete style: Edge's pill address bar, raised tabs and framed page.",
     image: "edge",
+    demo: "edge",
     focus: "0% 0%",
     zoom: 3.4,
     alt: "Zen Fluent's Microsoft Edge style",
@@ -99,6 +104,7 @@ const highlights: {
     title: "A URL bar like Windows'",
     text: "A WinUI text box or a pill; floating, it takes the material, your space's color or glass.",
     image: "urlbar",
+    demo: "urlbar",
     focus: "72% 11%",
     zoom: 1.85,
     alt: "The floating URL bar over a dimmed page",
@@ -114,6 +120,7 @@ const highlights: {
     title: "Compact mode, done right",
     text: "The sidebar slides in over Acrylic and the page fills the whole window.",
     image: "compact",
+    demo: "compact",
     focus: "0% 0%",
     zoom: 2.9,
     alt: "Compact mode with the sidebar shown on hover",
@@ -129,6 +136,7 @@ const highlights: {
     title: "A settings page like Windows Settings",
     text: "Every setting in Zen's settings, with themes, a drawing of the window and Sine's mods.",
     image: "settings-page",
+    demo: "settings",
     focus: "83% 17%",
     zoom: 1.43,
     alt: "Zen Fluent Enhanced's settings page",
@@ -144,6 +152,7 @@ const highlights: {
     title: "Quick Settings and presets",
     text: "Windows 11, Edge, Taskbar, Arc or Compact in one click, from Zen's Library.",
     image: "quick-settings",
+    demo: "quick",
     focus: "0% 0%",
     zoom: 2.6,
     alt: "Quick Settings in Zen's Library",
@@ -424,14 +433,16 @@ export function Home() {
                       `${item.title} : en savoir plus`,
                     )}>
                     <span
-                      className="highlight__shot"
+                      className={`highlight__shot${item.demo ? " highlight__shot--demo" : ""}`}
                       style={
                         {
                           "--focus": item.focus,
                           "--zoom": item.zoom,
                         } as React.CSSProperties
                       }>
-                      {item.video ? (
+                      {item.demo ? (
+                        <FeatureDemo scene={item.demo} />
+                      ) : item.video ? (
                         <FeatureVideo
                           src={item.video}
                           poster={`/shots/${item.image}.webp`}
